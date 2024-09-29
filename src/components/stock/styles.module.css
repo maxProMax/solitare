@@ -1,0 +1,5 @@
+.deck {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, 1fr);
+}

@@ -1,0 +1,15 @@
+.pilesWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.piles {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.pile {
+  position: relative;
+}

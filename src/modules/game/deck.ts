@@ -1,0 +1,69 @@
+import { makeAutoObservable, makeObservable, action } from "mobx";
+import random from "lodash/random";
+import { Transfer } from "./transfer";
+import { Suit, Type, Card } from "./card";
+import { CardsHolder } from "./cards-holder";
+
+export class Deck extends CardsHolder {
+  constructor(transfer: Transfer) {
+    super(transfer);
+
+    const tempCards: (Card | null)[] = [];
+    const cards: Card[] = [];
+
+    for (const [, type] of Object.entries(Type)) {
+      for (const [, suit] of Object.entries(Suit)) {
+        tempCards.push(new Card(suit, type));
+      }
+    }
+
+    while (tempCards.length !== cards.length) {
+      const i = this.getIdx();
+
+      if (tempCards.length === cards.length) {
+        break;
+      }
+
+      if (tempCards[i]) {
+        const { suit, type } = tempCards[i];
+        cards.push(new Card(suit, type));
+        tempCards[i] = null;
+        continue;
+      }
+
+      if (tempCards.length - cards.length === 1) {
+        const card = tempCards.find((c) => c);
+
+        if (card) {
+          const { suit, type } = card;
+          cards.push(new Card(suit, type));
+
+          break;
+        }
+      }
+    }
+
+    this.addToCards(...cards);
+
+    makeObservable(this, {
+      getCards: action,
+    });
+  }
+
+  getIdx() {
+    return random(0, 51);
+  }
+
+  /** Get cards by fixed amount */
+  getCards(amount: number): Card[] {
+    return this.cards.splice(0, amount);
+  }
+
+  getAllCards() {
+    const cards = this.cards;
+
+    this.removeAllCards();
+
+    return cards;
+  }
+}

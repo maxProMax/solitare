@@ -1,0 +1,46 @@
+.card {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: var(--card-width);
+  aspect-ratio: 3 / 4;
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 2px;
+  background-color: white;
+  cursor: pointer;
+  color: black;
+}
+
+.topLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.bottomRight {
+  display: flex;
+  flex-direction: column;
+  transform: rotate(180deg);
+}
+
+.red {
+  color: red;
+}
+
+.back {
+  background: blue;
+  height: 100%;
+}
+
+.placeholder {
+  position: relative;
+  border: 1px solid gray;
+  border-radius: 4px;
+  width: calc(var(--card-width) + 1px);
+  aspect-ratio: 3 / 4;
+  box-sizing: content-box;
+}
