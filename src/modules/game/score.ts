@@ -5,8 +5,7 @@ enum Points {
   start = -52,
   addToFoundation = 10,
   removeFromFoundation = -15,
-  openCard = 5,
-  fromWaste = 5,
+  base = 5,
 }
 
 export class Score {
@@ -49,11 +48,11 @@ export class Score {
   }
 
   openCard() {
-    this.setTotal(Points.openCard);
+    this.setTotal(Points.base);
   }
 
   moveFromWaste() {
-    this.setTotal(Points.fromWaste);
+    this.setTotal(Points.base);
   }
 }
 
@@ -64,10 +63,6 @@ export class ScoreWithStorage extends Score {
     super();
 
     this._storage = new GameStorage(storage);
-
-    // this.overrideStartGame();
-
-    // this.saveState();
   }
 
   setTotal(score: number) {
@@ -76,14 +71,6 @@ export class ScoreWithStorage extends Score {
   }
 
   startGame() {}
-
-  // overrideStartGame() {
-  //   if (this.savedState) {
-  //     this.total = this.savedState;
-  //   } else {
-  //     super.startGame();
-  //   }
-  // }
 
   saveState() {
     this._storage.putToStorage("score", { total: super.total });

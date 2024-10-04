@@ -1,4 +1,4 @@
-export class GameStorage<Key extends string = any> {
+export class GameStorage<Key extends string = string> {
   private _storage: Storage;
 
   constructor(storage = localStorage) {
@@ -6,7 +6,7 @@ export class GameStorage<Key extends string = any> {
   }
 
   putToStorage(type: Key, data: Record<string | number, unknown>) {
-    type && this._storage.setItem(type, JSON.stringify(data));
+    this._storage.setItem(type, JSON.stringify(data));
   }
 
   getFromStorage<T>(type: Key): T | null {

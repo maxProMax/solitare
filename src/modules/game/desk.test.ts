@@ -1,6 +1,4 @@
 import { Deck } from "./deck";
-import { Score } from "./score";
-import { Transfer } from "./transfer";
 
 describe("Desk", () => {
   beforeEach(() => {

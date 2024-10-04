@@ -31,7 +31,7 @@ export class Pile {
   }
 
   addToCardsToPile(cards: Card[]): void {
-    cards.forEach((card) => this.addToCards(card));
+    this.addToCards(...cards);
 
     this.openLastCard();
   }
@@ -39,7 +39,7 @@ export class Pile {
   openLastCard() {
     const [lastCard] = this._cards.slice(-1);
 
-    lastCard && lastCard?.openCard();
+    lastCard?.openCard();
   }
 
   isLastCardClosed() {
@@ -129,6 +129,8 @@ export class PileWithTransfer extends Pile {
   removeTransferredCards(): void {
     const i = this.cardIndexInTransfer;
 
+    this.cardIndexInTransfer = undefined;
+
     if (i === undefined) {
       throw Error("Missed _cardIndexInTransfer");
     }
@@ -143,8 +145,6 @@ export class PileWithTransfer extends Pile {
         this._score.openCard();
       }
     }
-
-    this.cardIndexInTransfer = undefined;
 
     if (this._transfer.fromInstance !== this) {
       this._score.openCard();

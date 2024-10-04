@@ -46,9 +46,7 @@ describe("FoundationWithTransfer", () => {
     const foundation = new FoundationWithTransfer(new Transfer());
     const COL_INDX = 0;
 
-    foundation.addCardsFromTransfer(COL_INDX);
-
-    expect(foundation.columns[COL_INDX]).toHaveLength(0);
+    expect(() => foundation.addCardsFromTransfer(COL_INDX)).toThrow();
   });
 
   it("addCards first card not ACE", () => {

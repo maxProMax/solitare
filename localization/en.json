@@ -2,5 +2,10 @@
   "header": {
     "btn": { "reset": "Reset", "resetScore": "Reset score" },
     "score": "Score: {score}"
+  },
+  "content": {
+    "win": {
+      "text": "You have won!!!"
+    }
   }
 }

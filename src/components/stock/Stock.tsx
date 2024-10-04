@@ -9,27 +9,22 @@ export const StockComponent: FC<{ stock?: Stock }> = observer(({ stock }) => {
   return (
     <div className={styles.deck} data-testid="deck">
       <div>
-        <Placeholder
-        // style={{ marginBottom: (deck?.cards.length || 0) * 2 }}
-        >
-          {stock?.cards.map((card, i) => (
+        <Placeholder>
+          {stock?.cards.map((card) => (
             <CardComponent
               key={card.id}
               card={card}
               onClick={() => stock.addToWaste()}
-              // style={{ top: i * 2 }}
-              // onDragStart={() => stock.addToTransfer(i)}
             />
           ))}
         </Placeholder>
       </div>
       <div>
         <Placeholder>
-          {stock?.waste.map((card, i) => (
+          {stock?.waste.map((card) => (
             <CardComponent
               key={card.id}
               card={card}
-              // style={{ top: i * 2 }}
               onDragStart={() => stock.addToTransfer()}
             />
           ))}

@@ -11,17 +11,25 @@ export class Foundation {
   private _columns: Columns;
   private _currentSuit?: Suit;
 
+  private _isWin: boolean = false;
+
   constructor() {
     this._columns = [[], [], [], []];
 
-    makeObservable<Foundation, "_columns">(this, {
+    makeObservable<Foundation, "_columns" | "_isWin">(this, {
       _columns: observable,
+      _isWin: observable,
     });
+  }
+
+  get isWin() {
+    return this._isWin;
   }
 
   set currentSuit(suit: Suit) {
     this._currentSuit = suit;
   }
+
   get currentSuit(): Suit | undefined {
     return this._currentSuit;
   }
@@ -29,8 +37,20 @@ export class Foundation {
   get columns() {
     return this._columns;
   }
-  set columns(columns: Columns) {
-    this._columns = columns;
+
+  checkIsWin() {
+    this._isWin =
+      this._columns.reduce((sum, col) => sum + col.length, 0) === 52;
+  }
+
+  addCardsToColumn(columnIndex: number, cards: Card[]) {
+    this.columns[columnIndex].push(...cards);
+    this.checkIsWin();
+  }
+
+  removeCardsFromColumn(columnIndex: number, cardIndex: number) {
+    this.columns[columnIndex].splice(cardIndex);
+    this.checkIsWin();
   }
 
   checkRules(column: Card[], card?: Card): boolean {
@@ -89,11 +109,7 @@ export class FoundationWithTransfer extends Foundation {
       throw Error("Missed _cardIndexInTransfer");
     }
 
-    if (i === 0) {
-      this.columns[j] = [];
-    } else if (i) {
-      this.columns[j].splice(i);
-    }
+    this.removeCardsFromColumn(j, i);
 
     this._cardIndex = undefined;
     this._columnIndex = undefined;
@@ -108,11 +124,9 @@ export class FoundationWithTransfer extends Foundation {
 
     const cards = this._transfer.getCardAndRestTransfer();
 
-    cards.forEach((card) => {
-      card.openCard();
-    });
+    cards.forEach((card) => card.openCard());
 
-    this.columns[columnIndex].push(...cards);
+    this.addCardsToColumn(columnIndex, cards);
   }
 }
 
@@ -161,7 +175,9 @@ export class FoundationWithStorage extends FoundationWithScore {
     this._storage = storage;
 
     if (this.savedState) {
-      this.columns = this.savedState.columns;
+      this.savedState.columns.forEach((cards, i) => {
+        this.addCardsToColumn(i, cards);
+      });
     }
   }
 

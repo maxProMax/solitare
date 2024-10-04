@@ -41,7 +41,7 @@ describe("game", () => {
   });
 
   test("init savedState", () => {
-    const saveData: any[] = [];
+    const saveData: { cards?: [] }[] = [];
 
     mockLocalStorage.setItem = jest.fn((k, v) => saveData.push(JSON.parse(v)));
 
@@ -50,11 +50,11 @@ describe("game", () => {
     expect(
       saveData.reduce((sum, item) => {
         if ("cards" in item) {
-          return sum + item.cards.length;
+          return sum + (item.cards?.length || 0);
         }
 
-        Object.values(item).forEach((cards: any) => {
-          sum += cards.length;
+        Object.values(item).forEach((cards) => {
+          sum += cards?.length || 0;
         });
 
         return sum;

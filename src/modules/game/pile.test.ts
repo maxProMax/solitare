@@ -80,7 +80,7 @@ describe("PileWithStorage", () => {
 
   test("init", () => {
     const [card1] = [new Card({ suit: Suit.DIAMONDS, type: Type.TWO })];
-    let pile = new PileWithStorage({
+    const pile = new PileWithStorage({
       storage,
       transfer,
       score,
@@ -98,7 +98,7 @@ describe("PileWithStorage", () => {
       JSON.stringify({ "0": [card1] })
     );
 
-    let pile = new PileWithStorage({
+    const pile = new PileWithStorage({
       storage,
       transfer,
       score,
@@ -111,14 +111,14 @@ describe("PileWithStorage", () => {
   test("addCardsFromTransfer", () => {
     const [card1] = [new Card({ suit: Suit.DIAMONDS, type: Type.KING })];
 
-    let pile = new PileWithStorage({
+    const pile = new PileWithStorage({
       storage,
       transfer,
       score,
       cards: [],
       pileIndex: 0,
     });
-    let pile2 = new PileWithStorage({
+    const pile2 = new PileWithStorage({
       storage,
       transfer,
       score,
@@ -139,7 +139,7 @@ describe("PileWithStorage", () => {
   test("removeTransferredCards", () => {
     const [card1] = [new Card({ suit: Suit.DIAMONDS, type: Type.KING })];
 
-    let pile = new PileWithStorage({
+    const pile = new PileWithStorage({
       storage,
       transfer,
       score,
@@ -165,7 +165,7 @@ describe("PileWithStorage", () => {
       new Card({ suit: Suit.HEARTS, type: Type.KING }),
     ];
 
-    let pile = new PileWithStorage({
+    const pile = new PileWithStorage({
       storage,
       transfer,
       score,
@@ -189,7 +189,7 @@ describe("PileWithStorage", () => {
   test("remove last card", () => {
     const [card1] = [new Card({ suit: Suit.DIAMONDS, type: Type.KING })];
 
-    let pile = new PileWithStorage({
+    const pile = new PileWithStorage({
       storage,
       transfer,
       score,

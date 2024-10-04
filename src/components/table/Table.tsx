@@ -4,6 +4,7 @@ import { StockComponent } from "@/components/stock/Stock";
 import { Game } from "@/modules/game/game";
 import { Piles } from "../piles/Piles";
 import { FoundationComponent } from "../foundation/Foundation";
+import { Win } from "@/components/win/Win";
 import styles from "./styles.module.css";
 
 export const TableComponent: FC<{ game: Game }> = observer(({ game }) => {
@@ -16,6 +17,7 @@ export const TableComponent: FC<{ game: Game }> = observer(({ game }) => {
         </div>
         <Piles piles={game.piles} />
       </div>
+      {game.foundation?.isWin && <Win reset={() => game.reset()} />}
     </div>
   );
 });

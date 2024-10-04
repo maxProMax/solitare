@@ -1,4 +1,4 @@
-import { makeAutoObservable, makeObservable, observable, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { Deck } from "./deck";
 import { Transfer } from "./transfer";
 import { PileWithTransfer, PileWithStorage } from "./pile";
@@ -15,6 +15,7 @@ export class Game {
   foundation?: FoundationWithStorage;
   stock?: StockWithStorage;
   score: ScoreWithStorage;
+
   private _storage: GameStorage;
 
   constructor(storage?: Storage) {
@@ -124,5 +125,3 @@ export class Game {
     });
   }
 }
-
-export default new Game();
