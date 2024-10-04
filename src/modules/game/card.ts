@@ -47,17 +47,30 @@ export const SUIT_COLORS = {
   [Suit.SPADES]: 0,
 };
 
+export type CardProperties = {
+  suit: Suit;
+  type: Type;
+  id?: string;
+  isOpen?: boolean;
+};
+
 export class Card {
   id: string;
   suit: Suit;
   type: Type;
   isOpen = false;
 
-  constructor(suit: Suit, type: Type) {
+  static fromArray(cards: CardProperties[]) {
+    return cards.map((o) => new Card(o));
+  }
+
+  constructor(args: CardProperties) {
+    const { suit, type, isOpen, id } = args;
+
     this.suit = suit;
     this.type = type;
-    this.isOpen = false;
-    this.id = `${suit}_${type}`;
+    this.isOpen = isOpen || false;
+    this.id = id || `${suit}_${type}`;
 
     makeAutoObservable(this);
   }

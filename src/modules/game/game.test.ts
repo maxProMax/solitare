@@ -1,8 +1,15 @@
-import { Foundation, Game } from "./game";
-import { CardsHolder } from "./cards-holder";
-import { Transfer } from "./transfer";
+import { Game } from "./game";
 import { Deck } from "./deck";
-import { Card, Suit, Type } from "./card";
+import { Type } from "./card";
+
+const mockLocalStorage = {
+  length: 0,
+  clear: jest.fn(),
+  getItem: jest.fn(),
+  key: jest.fn(),
+  removeItem: jest.fn(),
+  setItem: jest.fn(),
+};
 
 describe("game", () => {
   beforeEach(() => {
@@ -15,85 +22,55 @@ describe("game", () => {
       .spyOn(Deck.prototype, "getIdx")
       .mockImplementation(() => indexes.shift() as number);
   });
+
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
   it("init", () => {
-    const game = new Game();
+    const game = new Game(mockLocalStorage);
 
     const [lastCard] = game?.piles?.[4].cards.slice(-1) || [];
 
-    expect(game.stock?.cards).toHaveLength(23);
-    expect(game.stock?.waste).toHaveLength(1);
+    expect(game.stock?.cards).toHaveLength(24);
+    expect(game.stock?.waste).toHaveLength(0);
     expect(game.piles?.[0].cards[0].type).toBe(Type.TEN);
     expect(game.piles?.[6].cards).toHaveLength(7);
     expect(lastCard.isOpen).toBeTruthy();
     expect(game.piles?.[4].cards[1].isOpen).toBeFalsy();
   });
 
-  describe("Foundation", () => {
-    let transfer: Transfer;
-    let cardsHolder: CardsHolder;
+  test("init savedState", () => {
+    const saveData: any[] = [];
 
-    beforeEach(() => {
-      transfer = new Transfer();
-      cardsHolder = new CardsHolder(transfer);
-    });
+    mockLocalStorage.setItem = jest.fn((k, v) => saveData.push(JSON.parse(v)));
 
-    it("addCards no cards in transfer", () => {
-      const foundation = new Foundation(new Transfer());
-      const COL_INDX = 0;
+    new Game(mockLocalStorage);
 
-      foundation.addCards(COL_INDX);
+    expect(
+      saveData.reduce((sum, item) => {
+        if ("cards" in item) {
+          return sum + item.cards.length;
+        }
 
-      expect(foundation.columns[COL_INDX]).toHaveLength(0);
-    });
+        Object.values(item).forEach((cards: any) => {
+          sum += cards.length;
+        });
 
-    it("addCards first card not ACE", () => {
-      cardsHolder.addToCards(...[new Card(Suit.HEARTS, Type.TEN)]);
+        return sum;
+      }, 0)
+    ).toBe(52);
+  });
 
-      cardsHolder.addToTransfer(0);
+  it("reset", () => {
+    const game = new Game();
 
-      const foundation = new Foundation(transfer);
-      const COL_INDX = 1;
+    jest.restoreAllMocks();
 
-      expect(foundation.columns[COL_INDX]).toHaveLength(0);
-    });
+    game.stock?.addToWaste();
 
-    it("addCards first card - ACE", () => {
-      cardsHolder.addToCards(...[new Card(Suit.HEARTS, Type.ACE)]);
+    game.reset();
 
-      cardsHolder.addToTransfer(0);
-
-      const foundation = new Foundation(transfer);
-      const COL_INDX = 1;
-
-      foundation.addCards(COL_INDX);
-
-      expect(foundation.columns[COL_INDX]).toHaveLength(1);
-      expect(foundation.currentSuit).toBe(Suit.HEARTS);
-
-      const [card] = foundation.columns[COL_INDX];
-
-      expect(card.isOpen).toBeTruthy();
-
-      expect(cardsHolder.cards).toHaveLength(0);
-    });
-    it("rule", () => {
-      const foundation = new Foundation(new Transfer());
-
-      expect(foundation.checkRules([])).toBeFalsy();
-      expect(
-        foundation.checkRules([], new Card(Suit.CLUBS, Type.TEN))
-      ).toBeFalsy();
-      const cards = [new Card(Suit.CLUBS, Type.ACE)];
-      expect(
-        foundation.checkRules(cards, new Card(Suit.CLUBS, Type.TEN))
-      ).toBeFalsy();
-      expect(
-        foundation.checkRules(cards, new Card(Suit.CLUBS, Type.TWO))
-      ).toBeTruthy();
-    });
+    expect(game.stock?.waste).toHaveLength(0);
   });
 });

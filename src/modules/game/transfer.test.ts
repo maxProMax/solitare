@@ -1,24 +1,28 @@
 import { Transfer } from "./transfer";
-import { CardsHolder } from "./cards-holder";
+import { PileWithTransfer } from "./pile";
 import { Card, Suit, Type } from "./card";
+import { Score } from "./score";
 
 describe("Transfer", () => {
   let transfer: Transfer;
-  let cardsHolder: CardsHolder;
+  let pile: PileWithTransfer;
 
   beforeEach(() => {
     transfer = new Transfer();
-    cardsHolder = new CardsHolder(transfer);
+    pile = new PileWithTransfer({
+      transfer,
+      score: new Score(),
+      cards: [
+        new Card({ suit: Suit.HEARTS, type: Type.TEN }),
+        new Card({ suit: Suit.DIAMONDS, type: Type.SEVEN }),
+      ],
+    });
 
-    cardsHolder.addToCards(
-      ...[new Card(Suit.HEARTS, Type.TEN), new Card(Suit.DIAMONDS, Type.SEVEN)]
-    );
-
-    cardsHolder.addToTransfer(0);
+    pile.addToTransfer(0);
   });
 
   it("addCards", () => {
-    expect(transfer.fromInstance).toBe(cardsHolder);
+    expect(transfer.fromInstance).toBe(pile);
     expect(transfer.cards).toHaveLength(2);
   });
   it("getCardAndRestTransfer", () => {

@@ -1,16 +1,12 @@
 import { Card } from "./card";
 
-/**
- * Temporary state between transferring cards
- */
-// fromInstance?.removeTransferredCards();
-interface CardsHolder {
+interface ICardsHolder {
   removeTransferredCards: () => void;
 }
 
 export class Transfer {
   private _cards: Card[] = [];
-  private _fromInstance?: CardsHolder;
+  private _fromInstance?: ICardsHolder;
 
   set cards(cards: Card[]) {
     this._cards = cards;
@@ -24,7 +20,7 @@ export class Transfer {
     return this._fromInstance;
   }
 
-  addCards(fromInstance: CardsHolder, cards: Card[]) {
+  addCards(fromInstance: ICardsHolder, cards: Card[]) {
     this._cards = cards;
     this._fromInstance = fromInstance;
   }
@@ -33,6 +29,8 @@ export class Transfer {
     const cards = this._cards;
 
     this._cards = [];
+
+    this.fromInstance?.removeTransferredCards?.();
 
     this._fromInstance = undefined;
 

@@ -1,19 +1,17 @@
-import { makeAutoObservable, makeObservable, action } from "mobx";
+import { makeObservable, action, observable } from "mobx";
 import random from "lodash/random";
-import { Transfer } from "./transfer";
 import { Suit, Type, Card } from "./card";
-import { CardsHolder } from "./cards-holder";
 
-export class Deck extends CardsHolder {
-  constructor(transfer: Transfer) {
-    super(transfer);
+export class Deck {
+  private _cards: Card[] = [];
 
+  constructor() {
     const tempCards: (Card | null)[] = [];
     const cards: Card[] = [];
 
     for (const [, type] of Object.entries(Type)) {
       for (const [, suit] of Object.entries(Suit)) {
-        tempCards.push(new Card(suit, type));
+        tempCards.push(new Card({ suit, type }));
       }
     }
 
@@ -26,7 +24,7 @@ export class Deck extends CardsHolder {
 
       if (tempCards[i]) {
         const { suit, type } = tempCards[i];
-        cards.push(new Card(suit, type));
+        cards.push(new Card({ suit, type }));
         tempCards[i] = null;
         continue;
       }
@@ -36,7 +34,7 @@ export class Deck extends CardsHolder {
 
         if (card) {
           const { suit, type } = card;
-          cards.push(new Card(suit, type));
+          cards.push(new Card({ suit, type }));
 
           break;
         }
@@ -45,9 +43,20 @@ export class Deck extends CardsHolder {
 
     this.addToCards(...cards);
 
-    makeObservable(this, {
+    makeObservable<Deck, "_cards">(this, {
+      _cards: observable,
+      addToCards: action,
       getCards: action,
+      removeAllCards: action,
     });
+  }
+
+  get cards() {
+    return this._cards;
+  }
+
+  addToCards(...cards: Card[]) {
+    this._cards.push(...cards);
   }
 
   getIdx() {
@@ -56,11 +65,15 @@ export class Deck extends CardsHolder {
 
   /** Get cards by fixed amount */
   getCards(amount: number): Card[] {
-    return this.cards.splice(0, amount);
+    return this._cards.splice(0, amount);
+  }
+
+  removeAllCards() {
+    this._cards = [];
   }
 
   getAllCards() {
-    const cards = this.cards;
+    const cards = this._cards;
 
     this.removeAllCards();
 

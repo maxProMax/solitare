@@ -1,11 +1,10 @@
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import { observer } from "mobx-react-lite";
 import { StockComponent } from "@/components/stock/Stock";
 import { Game } from "@/modules/game/game";
 import { Piles } from "../piles/Piles";
-
-import styles from "./styles.module.css";
 import { FoundationComponent } from "../foundation/Foundation";
+import styles from "./styles.module.css";
 
 export const TableComponent: FC<{ game: Game }> = observer(({ game }) => {
   return (
@@ -20,16 +19,3 @@ export const TableComponent: FC<{ game: Game }> = observer(({ game }) => {
     </div>
   );
 });
-
-export const TableContainer: FC = () => {
-  const [game, startGame] = useState<Game>();
-
-  useEffect(() => {
-    const game = new Game();
-    console.log({ game });
-
-    startGame(game);
-  }, []);
-
-  return game ? <TableComponent game={game} /> : <div>Loading...</div>;
-};

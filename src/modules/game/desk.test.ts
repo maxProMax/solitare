@@ -1,4 +1,5 @@
 import { Deck } from "./deck";
+import { Score } from "./score";
 import { Transfer } from "./transfer";
 
 describe("Desk", () => {
@@ -18,14 +19,14 @@ describe("Desk", () => {
   });
 
   it("check desk", () => {
-    const deck = new Deck(new Transfer());
+    const deck = new Deck();
 
     expect(deck.cards).toMatchSnapshot();
     expect(2).toBe(2);
   });
 
   it("get 5 cards", () => {
-    const deck = new Deck(new Transfer());
+    const deck = new Deck();
 
     deck.getCards(5);
 

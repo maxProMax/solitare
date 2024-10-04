@@ -4,7 +4,7 @@ import { Type, Suit, Card } from "@/modules/game/card";
 
 describe("card component", () => {
   it("render card", () => {
-    const card = new Card(Suit.CLUBS, Type.EIGHT);
+    const card = new Card({ suit: Suit.CLUBS, type: Type.EIGHT });
     card.openCard();
 
     render(<CardComponent card={card} />);

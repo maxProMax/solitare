@@ -12,6 +12,7 @@ export const Placeholder: FC<
       className={styles.placeholder}
       data-testid="card-placeholder"
       onDrop={onDrop}
+      onDragEnd={onDrop}
       onDragOver={(e) => {
         e.preventDefault();
       }}

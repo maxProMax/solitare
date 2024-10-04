@@ -28,6 +28,10 @@ export const CardComponent: FC<{
         e.preventDefault();
         onDrop?.();
       }}
+      onDragEnd={(e) => {
+        e.preventDefault();
+        onDrop?.();
+      }}
       onDragOver={(e) => {
         e.preventDefault();
       }}

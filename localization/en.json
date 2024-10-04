@@ -1,5 +1,6 @@
 {
-  "home": {
-    "title": "Hello world!"
+  "header": {
+    "btn": { "reset": "Reset", "resetScore": "Reset score" },
+    "score": "Score: {score}"
   }
 }

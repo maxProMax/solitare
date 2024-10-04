@@ -3,6 +3,7 @@ import { StockComponent } from "./Stock";
 import { Deck } from "@/modules/game/deck";
 import { Stock } from "@/modules/game/stock";
 import { Transfer } from "@/modules/game/transfer";
+import { Score } from "@/modules/game/score";
 
 describe("StockComponent", () => {
   beforeEach(() => {
@@ -28,8 +29,9 @@ describe("StockComponent", () => {
 
   it("with cards", () => {
     const transfer = new Transfer();
-    const deck = new Deck(transfer);
-    const stock = new Stock(transfer, deck.getAllCards());
+    const score = new Score();
+    const deck = new Deck(transfer, score);
+    const stock = new Stock({ transfer, score, cards: deck.getAllCards() });
 
     render(<StockComponent stock={stock} />);
 
