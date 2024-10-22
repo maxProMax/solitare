@@ -1,8 +1,9 @@
 import { makeObservable, observable, action } from "mobx";
 import { Card, Type, TYPE_ORDER, SUIT_COLORS, CardProperties } from "./card";
-import { Transfer } from "./transfer";
-import { Score } from "./score";
+import { ITransferConsumer } from "./transfer";
+import { IHistoryConsumer } from "./history";
 import { GameStorage } from "./storage";
+import { GameState } from "./game";
 
 export class Pile {
   private _cards: Card[] = [];
@@ -20,6 +21,10 @@ export class Pile {
 
   get cards() {
     return this._cards;
+  }
+
+  reset(cards: Card[]) {
+    this._cards = cards;
   }
 
   addToCards(...cards: Card[]) {
@@ -80,25 +85,25 @@ export class Pile {
 }
 
 interface PileProperties {
-  transfer: Transfer;
-  score: Score;
   cards: Card[];
+  gameState: GameState;
 }
 
-export class PileWithTransfer extends Pile {
-  private _score: Score;
-  private _transfer: Transfer;
+export class PileWithTransfer
+  extends Pile
+  implements IHistoryConsumer, ITransferConsumer
+{
+  protected _gameState: GameState;
 
   /** From which index cards in transfer */
   cardIndexInTransfer?: number;
 
   constructor(properties: PileProperties) {
-    const { transfer, score, cards } = properties;
+    const { gameState, cards } = properties;
 
     super(cards);
 
-    this._score = score;
-    this._transfer = transfer;
+    this._gameState = gameState;
 
     makeObservable(this, {
       removeTransferredCards: action,
@@ -106,24 +111,28 @@ export class PileWithTransfer extends Pile {
   }
 
   addCardsFromTransfer() {
-    const [firstCard] = this._transfer.cards;
+    const [firstCard] = this._gameState.transfer.cards;
 
     if (!this.checkRules(firstCard)) {
-      return;
+      return false;
     }
 
-    const cards = this._transfer.getCardAndRestTransfer();
+    this._gameState.history.setHistoryTo(this, this.getDataForHistory(true));
+
+    const cards = this._gameState.transfer.getCardAndRestTransfer();
 
     cards.forEach((card) => card.openCard());
 
     this.addToCards(...cards);
+
+    return true;
   }
 
   /** add cards to transfer */
   addToTransfer(idx: number) {
     this.cardIndexInTransfer = idx;
 
-    this._transfer.addCards(this, this.cards.slice(idx));
+    this._gameState.transfer.addCards(this, this.cards.slice(idx));
   }
 
   removeTransferredCards(): void {
@@ -135,6 +144,8 @@ export class PileWithTransfer extends Pile {
       throw Error("Missed _cardIndexInTransfer");
     }
 
+    this._gameState.history.setHistoryFrom(this, this.getDataForHistory());
+
     if (i === 0) {
       this.removeAllCards();
     } else if (i) {
@@ -142,12 +153,29 @@ export class PileWithTransfer extends Pile {
 
       if (this.isLastCardClosed()) {
         this.openLastCard();
-        this._score.openCard();
+        this._gameState.score.openCard();
       }
     }
 
-    if (this._transfer.fromInstance !== this) {
-      this._score.openCard();
+    if (this._gameState.transfer.fromInstance !== this) {
+      this._gameState.score.openCard();
+    }
+  }
+
+  getDataForHistory(withScore?: boolean) {
+    return {
+      cards: this.cards.map((c) => c.clone()),
+      ...(withScore ? { score: this._gameState.score.total } : {}),
+    };
+  }
+
+  applyFromHistory(data?: { cards?: Card[]; score?: number }) {
+    const { cards, score } = data || {};
+
+    cards && this.reset(Card.fromArray(cards));
+
+    if (typeof score !== "undefined") {
+      this._gameState.score.replaceTotal(score);
     }
   }
 }
@@ -158,8 +186,8 @@ interface PileWithStoreProperties extends PileProperties {
 }
 
 export class PileWithStorage extends PileWithTransfer {
-  private _pileIndex: number = 0;
-  private _storage: GameStorage<"pile">;
+  protected _pileIndex: number = 0;
+  protected _storage: GameStorage<"pile">;
 
   static clearState(storage: GameStorage<"pile">) {
     storage.removeItem("pile");
@@ -187,13 +215,23 @@ export class PileWithStorage extends PileWithTransfer {
   }
 
   addCardsFromTransfer() {
-    super.addCardsFromTransfer();
+    const result = super.addCardsFromTransfer();
 
-    this.saveState();
+    if (result) {
+      this.saveState();
+    }
+
+    return result;
   }
 
   removeTransferredCards(): void {
     super.removeTransferredCards();
+
+    this.saveState();
+  }
+
+  applyFromHistory(data?: Record<string, unknown>) {
+    super.applyFromHistory(data);
 
     this.saveState();
   }

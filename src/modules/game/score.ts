@@ -9,7 +9,7 @@ enum Points {
 }
 
 export class Score {
-  private _total: number = 0;
+  protected _total: number = 0;
 
   get total() {
     return this._total;
@@ -20,6 +20,10 @@ export class Score {
 
   setTotal(score: number) {
     this._total += score;
+  }
+
+  replaceTotal(score: number) {
+    this._total = score;
   }
 
   constructor() {
@@ -57,7 +61,7 @@ export class Score {
 }
 
 export class ScoreWithStorage extends Score {
-  private _storage: GameStorage<"score">;
+  protected _storage: GameStorage<"score">;
 
   constructor(storage?: Storage) {
     super();
@@ -67,6 +71,11 @@ export class ScoreWithStorage extends Score {
 
   setTotal(score: number) {
     super.setTotal(score);
+    this.saveState();
+  }
+
+  replaceTotal(score: number) {
+    super.replaceTotal(score);
     this.saveState();
   }
 

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, DragEvent } from "react";
 import { observer } from "mobx-react-lite";
 import { PileWithTransfer } from "@/modules/game/pile";
 import { CardComponent } from "../card/Card";
@@ -7,7 +7,11 @@ import { Placeholder } from "@/components/card/Placeholder";
 
 export const PileComponent: FC<{ pile: PileWithTransfer }> = observer(
   ({ pile }) => {
-    const onDrop = () => pile.addCardsFromTransfer();
+    const onDrop = (e: DragEvent<HTMLDivElement>) => {
+      pile.addCardsFromTransfer();
+
+      e.stopPropagation();
+    };
 
     return (
       <div className={styles.pile} data-testid="pile">

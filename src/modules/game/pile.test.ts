@@ -1,17 +1,14 @@
 import { PileWithTransfer, PileWithStorage } from "./pile";
-import { Transfer } from "./transfer";
 import { Card, Suit, Type } from "./card";
-import { Score } from "./score";
-import { describe } from "node:test";
 import { GameStorage } from "./storage";
+import { GameState } from "./game";
 
 describe("Pile", () => {
   test("last card inverted", () => {
     const lastCard = new Card({ suit: Suit.DIAMONDS, type: Type.SEVEN });
 
     new PileWithTransfer({
-      transfer: new Transfer(),
-      score: new Score(),
+      gameState: new GameState(),
       cards: [
         new Card({ suit: Suit.CLUBS, type: Type.ACE }),
         new Card({ suit: Suit.HEARTS, type: Type.TEN }),
@@ -24,8 +21,7 @@ describe("Pile", () => {
 
   test("checkRules", () => {
     const pile = new PileWithTransfer({
-      transfer: new Transfer(),
-      score: new Score(),
+      gameState: new GameState(),
       cards: [],
     });
 
@@ -44,8 +40,7 @@ describe("Pile", () => {
   });
   test("checkRules ace and two", () => {
     const pile = new PileWithTransfer({
-      transfer: new Transfer(),
-      score: new Score(),
+      gameState: new GameState(),
       cards: [new Card({ suit: Suit.DIAMONDS, type: Type.TWO })],
     });
 
@@ -57,8 +52,7 @@ describe("Pile", () => {
 
 describe("PileWithStorage", () => {
   let storage: GameStorage<"pile">;
-  let transfer: Transfer;
-  let score: Score;
+  let appState: GameState;
 
   const mockedLocalStorage = {
     length: 0,
@@ -71,8 +65,7 @@ describe("PileWithStorage", () => {
 
   beforeEach(() => {
     storage = new GameStorage(mockedLocalStorage);
-    transfer = new Transfer();
-    score = new Score();
+    appState = new GameState();
   });
   afterEach(() => {
     jest.resetAllMocks();
@@ -82,8 +75,7 @@ describe("PileWithStorage", () => {
     const [card1] = [new Card({ suit: Suit.DIAMONDS, type: Type.TWO })];
     const pile = new PileWithStorage({
       storage,
-      transfer,
-      score,
+      gameState: appState,
       cards: [card1],
     });
 
@@ -100,8 +92,7 @@ describe("PileWithStorage", () => {
 
     const pile = new PileWithStorage({
       storage,
-      transfer,
-      score,
+      gameState: appState,
       cards: [],
     });
 
@@ -113,15 +104,13 @@ describe("PileWithStorage", () => {
 
     const pile = new PileWithStorage({
       storage,
-      transfer,
-      score,
+      gameState: appState,
       cards: [],
       pileIndex: 0,
     });
     const pile2 = new PileWithStorage({
       storage,
-      transfer,
-      score,
+      gameState: appState,
       cards: [card1],
       pileIndex: 1,
     });
@@ -141,8 +130,7 @@ describe("PileWithStorage", () => {
 
     const pile = new PileWithStorage({
       storage,
-      transfer,
-      score,
+      gameState: appState,
       cards: [card1],
       pileIndex: 0,
     });
@@ -167,8 +155,7 @@ describe("PileWithStorage", () => {
 
     const pile = new PileWithStorage({
       storage,
-      transfer,
-      score,
+      gameState: appState,
       cards: [card2],
       pileIndex: 1,
     });
@@ -191,8 +178,7 @@ describe("PileWithStorage", () => {
 
     const pile = new PileWithStorage({
       storage,
-      transfer,
-      score,
+      gameState: appState,
       cards: [card1],
       pileIndex: 0,
     });

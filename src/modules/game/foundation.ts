@@ -1,17 +1,16 @@
 import { makeObservable, observable, action } from "mobx";
 import { Card, Suit, Type, TYPE_ORDER } from "./card";
-
-import { Transfer } from "./transfer";
-import { Score } from "./score";
 import { GameStorage } from "./storage";
+import { GameState } from "./game";
+import { IHistoryConsumer } from "./history";
+import { ITransferConsumer } from "./transfer";
 
 type Columns = [Card[], Card[], Card[], Card[]];
 
 export class Foundation {
-  private _columns: Columns;
-  private _currentSuit?: Suit;
-
-  private _isWin: boolean = false;
+  protected _columns: Columns;
+  protected _currentSuit?: Suit;
+  protected _isWin: boolean = false;
 
   constructor() {
     this._columns = [[], [], [], []];
@@ -19,23 +18,24 @@ export class Foundation {
     makeObservable<Foundation, "_columns" | "_isWin">(this, {
       _columns: observable,
       _isWin: observable,
+      reset: action,
+      addCardsToColumn: action,
+      removeCardsFromColumn: action,
     });
-  }
-
-  get isWin() {
-    return this._isWin;
-  }
-
-  set currentSuit(suit: Suit) {
-    this._currentSuit = suit;
-  }
-
-  get currentSuit(): Suit | undefined {
-    return this._currentSuit;
   }
 
   get columns() {
     return this._columns;
+  }
+  get currentSuit() {
+    return this._currentSuit;
+  }
+  get isWin() {
+    return this._isWin;
+  }
+
+  reset(columns: Columns) {
+    this._columns = columns;
   }
 
   checkIsWin() {
@@ -44,12 +44,12 @@ export class Foundation {
   }
 
   addCardsToColumn(columnIndex: number, cards: Card[]) {
-    this.columns[columnIndex].push(...cards);
+    this._columns[columnIndex].push(...cards);
     this.checkIsWin();
   }
 
   removeCardsFromColumn(columnIndex: number, cardIndex: number) {
-    this.columns[columnIndex].splice(cardIndex);
+    this._columns[columnIndex].splice(cardIndex);
     this.checkIsWin();
   }
 
@@ -59,7 +59,7 @@ export class Foundation {
     }
 
     if (!column.length && card?.type === Type.ACE) {
-      this.currentSuit = card.suit;
+      this._currentSuit = card.suit;
 
       return true;
     }
@@ -78,15 +78,24 @@ export class Foundation {
   }
 }
 
-export class FoundationWithTransfer extends Foundation {
-  private _transfer: Transfer;
+interface FoundationProperties {
+  gameState: GameState;
+}
+
+export class FoundationWithTransfer
+  extends Foundation
+  implements IHistoryConsumer, ITransferConsumer
+{
+  private _gameState: GameState;
   private _cardIndex?: number;
   private _columnIndex?: number;
 
-  constructor(transfer: Transfer) {
+  constructor(properties: FoundationProperties) {
+    const { gameState: appState } = properties;
+
     super();
 
-    this._transfer = transfer;
+    this._gameState = appState;
 
     makeObservable(this, {
       addCardsFromTransfer: action,
@@ -98,7 +107,10 @@ export class FoundationWithTransfer extends Foundation {
     this._cardIndex = cardIndex;
     this._columnIndex = columnIndex;
 
-    this._transfer.addCards(this, this.columns[columnIndex].slice(cardIndex));
+    this._gameState.transfer.addCards(
+      this,
+      this._columns[columnIndex].slice(cardIndex)
+    );
   }
 
   removeTransferredCards() {
@@ -109,82 +121,82 @@ export class FoundationWithTransfer extends Foundation {
       throw Error("Missed _cardIndexInTransfer");
     }
 
+    this._gameState.history.setHistoryFrom(this, this.getDataForHistory());
+
     this.removeCardsFromColumn(j, i);
 
     this._cardIndex = undefined;
     this._columnIndex = undefined;
+
+    this._gameState.score.removeFromFoundation();
   }
 
   addCardsFromTransfer(columnIndex: number) {
-    const [firstCard] = this._transfer.cards;
+    const [firstCard] = this._gameState.transfer.cards;
 
-    if (!this.checkRules(this.columns[columnIndex], firstCard)) {
-      throw Error("Not satisfy rules");
+    if (!this.checkRules(this._columns[columnIndex], firstCard)) {
+      return false;
     }
 
-    const cards = this._transfer.getCardAndRestTransfer();
+    this._gameState.history.setHistoryTo(this, this.getDataForHistory(true));
+    this._gameState.score.addToFoundation();
+
+    const cards = this._gameState.transfer.getCardAndRestTransfer();
 
     cards.forEach((card) => card.openCard());
 
     this.addCardsToColumn(columnIndex, cards);
+
+    return true;
+  }
+
+  getDataForHistory(withScore?: boolean) {
+    return {
+      columns: [...this._columns].map((c) => c.map((card) => card.clone())),
+      ...(withScore ? { score: this._gameState.score.total } : {}),
+    };
+  }
+
+  applyFromHistory(data?: { columns?: Columns; score?: number }) {
+    const { columns, score } = data || {};
+
+    columns && this.reset(columns);
+
+    if (typeof score !== "undefined") {
+      this._gameState.score.replaceTotal(score);
+    }
   }
 }
 
-export class FoundationWithScore extends FoundationWithTransfer {
-  private _score: Score;
-
-  constructor({ score, transfer }: { score: Score; transfer: Transfer }) {
-    super(transfer);
-
-    this._score = score;
-  }
-
-  removeTransferredCards() {
-    super.removeTransferredCards();
-
-    this._score.removeFromFoundation();
-  }
-
-  addCardsFromTransfer(columnIndex: number) {
-    try {
-      super.addCardsFromTransfer(columnIndex);
-
-      this._score.addToFoundation();
-    } catch {}
-  }
+interface FoundationWithStoreProperties extends FoundationProperties {
+  storage: GameStorage<"foundation">;
 }
 
-export class FoundationWithStorage extends FoundationWithScore {
+export class FoundationWithStorage extends FoundationWithTransfer {
   private _storage: GameStorage<"foundation">;
 
   static clearState(storage: GameStorage<"foundation">) {
     storage.removeItem("foundation");
   }
 
-  constructor({
-    score,
-    transfer,
-    storage,
-  }: {
-    score: Score;
-    transfer: Transfer;
-    storage: GameStorage<"foundation">;
-  }) {
-    super({ score, transfer });
+  constructor({ storage, ...rest }: FoundationWithStoreProperties) {
+    super(rest);
 
     this._storage = storage;
 
     if (this.savedState) {
       this.savedState.columns.forEach((cards, i) => {
-        this.addCardsToColumn(i, cards);
+        this.addCardsToColumn(i, Card.fromArray(cards));
       });
     }
   }
 
   addCardsFromTransfer(columnIndex: number) {
-    super.addCardsFromTransfer(columnIndex);
-
-    this.saveState();
+    const status = super.addCardsFromTransfer(columnIndex);
+    if (status) {
+      this.saveState();
+    }
+    return status;
   }
 
   removeTransferredCards() {
@@ -192,9 +204,14 @@ export class FoundationWithStorage extends FoundationWithScore {
     this.saveState();
   }
 
+  applyFromHistory(data?: { columns?: Columns; score?: number }) {
+    super.applyFromHistory(data);
+    this.saveState();
+  }
+
   saveState() {
     this._storage.putToStorage("foundation", {
-      columns: this.columns,
+      columns: this._columns,
     });
   }
 

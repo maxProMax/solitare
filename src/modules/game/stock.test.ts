@@ -1,18 +1,17 @@
 import { Card, Suit, Type } from "./card";
+import { GameState } from "./game";
 import { Score } from "./score";
-import { Stock, StockWithStorage } from "./stock";
+import { StockWithTransfer, StockWithStorage } from "./stock";
 import { GameStorage } from "./storage";
-import { Transfer } from "./transfer";
 
 describe("Stock", () => {
-  let transfer: Transfer;
-  let stock: Stock;
+  let appState: GameState;
+  let stock: StockWithTransfer;
 
   beforeEach(() => {
-    transfer = new Transfer();
-    stock = new Stock({
-      transfer,
-      score: new Score(),
+    appState = new GameState();
+    stock = new StockWithTransfer({
+      gameState: appState,
       cards: [
         new Card({ suit: Suit.CLUBS, type: Type.ACE }),
         new Card({ suit: Suit.DIAMONDS, type: Type.TEN }),
@@ -33,7 +32,7 @@ describe("Stock", () => {
     stock.addToTransfer();
 
     expect(stock.waste).toHaveLength(1);
-    expect(transfer.cards).toHaveLength(1);
+    expect(appState.transfer.cards).toHaveLength(1);
 
     stock.removeTransferredCards();
 
@@ -42,8 +41,7 @@ describe("Stock", () => {
 });
 
 describe("StockWithStorage", () => {
-  let transfer: Transfer;
-  let score: Score;
+  let appState: GameState;
   let storage: GameStorage;
 
   const mockedLocalStorage = {
@@ -56,8 +54,7 @@ describe("StockWithStorage", () => {
   };
 
   beforeEach(() => {
-    transfer = new Transfer();
-    score = new Score();
+    appState = new GameState();
     storage = new GameStorage(mockedLocalStorage);
   });
   afterEach(() => {
@@ -70,7 +67,11 @@ describe("StockWithStorage", () => {
       new Card({ suit: Suit.DIAMONDS, type: Type.TEN }),
     ];
 
-    const stock = new StockWithStorage({ transfer, cards, score, storage });
+    const stock = new StockWithStorage({
+      gameState: appState,
+      cards,
+      storage,
+    });
 
     expect(stock.cards).toHaveLength(2);
     expect(stock.waste).toHaveLength(0);
@@ -86,7 +87,11 @@ describe("StockWithStorage", () => {
       JSON.stringify({ cards: [card1], waste: [card2] })
     );
 
-    const stock = new StockWithStorage({ transfer, cards: [], score, storage });
+    const stock = new StockWithStorage({
+      gameState: appState,
+      cards: [],
+      storage,
+    });
 
     expect(stock.cards).toHaveLength(1);
     expect(stock.waste).toHaveLength(1);
@@ -98,9 +103,8 @@ describe("StockWithStorage", () => {
     const [card1] = [new Card({ suit: Suit.CLUBS, type: Type.ACE })];
 
     const stock = new StockWithStorage({
-      transfer,
+      gameState: appState,
       cards: [card1],
-      score,
       storage,
     });
 
@@ -123,9 +127,8 @@ describe("StockWithStorage", () => {
     );
 
     const stock = new StockWithStorage({
-      transfer,
+      gameState: appState,
       cards: [card2],
-      score,
       storage,
     });
 
@@ -141,9 +144,8 @@ describe("StockWithStorage", () => {
     const [card1] = [new Card({ suit: Suit.CLUBS, type: Type.ACE })];
 
     const stock = new StockWithStorage({
-      transfer,
+      gameState: appState,
       cards: [card1],
-      score,
       storage,
     });
 
@@ -163,9 +165,8 @@ describe("StockWithStorage", () => {
     );
 
     const stock = new StockWithStorage({
-      transfer,
+      gameState: appState,
       cards: [],
-      score,
       storage,
     });
 

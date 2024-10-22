@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { StockComponent } from "./Stock";
 import { Deck } from "@/modules/game/deck";
-import { Stock } from "@/modules/game/stock";
+import { StockWithTransfer } from "@/modules/game/stock";
 import { Transfer } from "@/modules/game/transfer";
 import { Score } from "@/modules/game/score";
 
@@ -31,7 +31,11 @@ describe("StockComponent", () => {
     const transfer = new Transfer();
     const score = new Score();
     const deck = new Deck(transfer, score);
-    const stock = new Stock({ transfer, score, cards: deck.getAllCards() });
+    const stock = new StockWithTransfer({
+      transfer,
+      score,
+      cards: deck.getAllCards(),
+    });
 
     render(<StockComponent stock={stock} />);
 

@@ -1,12 +1,13 @@
 import { Card } from "./card";
 
-interface ICardsHolder {
+export interface ITransferConsumer {
   removeTransferredCards: () => void;
+  backCards?: () => void;
 }
 
 export class Transfer {
   private _cards: Card[] = [];
-  private _fromInstance?: ICardsHolder;
+  private _fromInstance?: ITransferConsumer;
 
   set cards(cards: Card[]) {
     this._cards = cards;
@@ -20,7 +21,7 @@ export class Transfer {
     return this._fromInstance;
   }
 
-  addCards(fromInstance: ICardsHolder, cards: Card[]) {
+  addCards(fromInstance: ITransferConsumer, cards: Card[]) {
     this._cards = cards;
     this._fromInstance = fromInstance;
   }

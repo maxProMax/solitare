@@ -1,35 +1,74 @@
 import { makeAutoObservable } from "mobx";
 import { Deck } from "./deck";
 import { Transfer } from "./transfer";
+import { History } from "./history";
 import { PileWithTransfer, PileWithStorage } from "./pile";
 import { StockWithStorage } from "./stock";
 import { FoundationWithStorage } from "./foundation";
-import { ScoreWithStorage, InitScore, ResetScore } from "./score";
+import { InitScore, ResetScore, Score } from "./score";
 import { GameStorage } from "./storage";
 import { Card, Suit, Type, TYPE_ORDER } from "./card";
+
+interface GameStateProperties {
+  score?: Score;
+  storage?: Storage;
+}
+
+export class GameState {
+  private _transfer: Transfer = new Transfer();
+  private _history: History = new History();
+  private _score: Score;
+
+  constructor(properties?: GameStateProperties) {
+    const { score = new Score() } = properties || {};
+
+    this._score = score;
+  }
+
+  get transfer() {
+    return this._transfer;
+  }
+
+  get history() {
+    return this._history;
+  }
+
+  get score() {
+    return this._score;
+  }
+}
+
+class Helper_3d {
+  onUpAction?: () => boolean;
+}
 
 export class Game {
   deck: Deck;
   piles?: PileWithStorage[];
-  transfer: Transfer = new Transfer();
   foundation?: FoundationWithStorage;
   stock?: StockWithStorage;
-  score: ScoreWithStorage;
+  helper_3d: Helper_3d;
 
   private _storage: GameStorage;
+  private _gameState: GameState;
 
   constructor(storage?: Storage) {
+    this._gameState = new GameState({ score: new InitScore() });
     this._storage = new GameStorage(storage);
-    this.score = new InitScore();
 
     this.deck = this.createDeck();
     this.foundation = this.createFoundation();
     this.piles = this.createPiles();
     this.stock = this.createStock();
+    this.helper_3d = new Helper_3d();
 
     makeAutoObservable(this);
 
     // this.generateWinningSet();
+  }
+
+  get gameState() {
+    return this._gameState;
   }
 
   private createDeck() {
@@ -38,9 +77,8 @@ export class Game {
 
   private createFoundation() {
     return new FoundationWithStorage({
-      transfer: this.transfer,
-      score: this.score,
       storage: this._storage,
+      gameState: this._gameState,
     });
   }
 
@@ -48,21 +86,19 @@ export class Game {
     return PileWithTransfer.pileAmounts.map(
       (amount, i) =>
         new PileWithStorage({
-          transfer: this.transfer,
-          score: this.score,
           cards: this.deck.getCards(amount),
           pileIndex: i,
           storage: this._storage,
+          gameState: this._gameState,
         })
     );
   }
 
   private createStock() {
     return new StockWithStorage({
-      transfer: this.transfer,
-      score: this.score,
       cards: this.deck.getAllCards(),
       storage: this._storage,
+      gameState: this._gameState,
     });
   }
 
@@ -71,7 +107,7 @@ export class Game {
     StockWithStorage.clearState(this._storage);
     PileWithStorage.clearState(this._storage);
 
-    this.score = new ResetScore();
+    this._gameState = new GameState({ score: new ResetScore() });
 
     this.deck = this.createDeck();
     this.foundation = this.createFoundation();
@@ -82,12 +118,16 @@ export class Game {
   resetScore() {
     this._storage.clear();
 
-    this.score = new InitScore();
+    this._gameState = new GameState({ score: new InitScore() });
 
     this.deck = this.createDeck();
     this.foundation = this.createFoundation();
     this.piles = this.createPiles();
     this.stock = this.createStock();
+  }
+
+  back() {
+    this._gameState.history.historyBack();
   }
 
   generateWinningSet() {

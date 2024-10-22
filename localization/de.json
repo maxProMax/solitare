@@ -1,0 +1,11 @@
+{
+  "header": {
+    "btn": { "reset": "Reset de", "resetScore": "Reset score de" },
+    "score": "Score: {score} de"
+  },
+  "content": {
+    "win": {
+      "text": "You have won!!!"
+    }
+  }
+}

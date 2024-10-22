@@ -10,8 +10,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-three/drei": "^9.114.0",
+    "@react-three/fiber": "^8.17.9",
+    "@react-three/rapier": "^1.5.0",
+    "@types/three": "^0.169.0",
     "clsx": "^2.1.1",
     "i": "^0.3.7",
+    "leva": "^0.9.35",
     "lodash": "^4.17.21",
     "mobx-react-lite": "^4.0.7",
     "next": "14.2.13",
@@ -19,7 +24,9 @@
     "npm": "^10.8.3",
     "react": "^18",
     "react-dom": "^18",
-    "ts-node": "^10.9.2"
+    "three": "^0.169.0",
+    "ts-node": "^10.9.2",
+    "zustand": "^5.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.5.0",

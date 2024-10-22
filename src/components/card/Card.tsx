@@ -8,7 +8,7 @@ export const CardComponent: FC<{
   card: Card;
   style?: CSSProperties;
   onDragStart?: (e: DragEvent<HTMLDivElement>) => void;
-  onDrop?: () => void;
+  onDrop?: (e: DragEvent<HTMLDivElement>) => void;
   onClick?: (e?: MouseEvent<HTMLDivElement>) => void;
 }> = observer(({ card, style, onDragStart, onDrop, onClick }) => {
   const { suit, type } = card;
@@ -26,11 +26,11 @@ export const CardComponent: FC<{
       onDragStart={onDragStart}
       onDrop={(e) => {
         e.preventDefault();
-        onDrop?.();
+        onDrop?.(e);
       }}
       onDragEnd={(e) => {
         e.preventDefault();
-        onDrop?.();
+        onDrop?.(e);
       }}
       onDragOver={(e) => {
         e.preventDefault();

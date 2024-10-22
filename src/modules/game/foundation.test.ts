@@ -1,5 +1,4 @@
 import { PileWithTransfer } from "./pile";
-import { Transfer } from "./transfer";
 import { Card, Suit, Type } from "./card";
 import {
   FoundationWithTransfer,
@@ -8,7 +7,8 @@ import {
 } from "./foundation";
 import { Score } from "./score";
 import { GameStorage } from "./storage";
-import { Stock } from "./stock";
+import { StockWithTransfer } from "./stock";
+import { GameState } from "./game";
 
 describe("Foundation", () => {
   test("checkRules", () => {
@@ -36,29 +36,34 @@ describe("Foundation", () => {
 });
 
 describe("FoundationWithTransfer", () => {
-  let transfer: Transfer;
+  let appState: GameState;
 
   beforeEach(() => {
-    transfer = new Transfer();
+    appState = new GameState();
   });
 
   it("addCards no cards in transfer", () => {
-    const foundation = new FoundationWithTransfer(new Transfer());
+    const foundation = new FoundationWithTransfer({
+      gameState: new GameState(),
+    });
     const COL_INDX = 0;
 
-    expect(() => foundation.addCardsFromTransfer(COL_INDX)).toThrow();
+    foundation.addCardsFromTransfer(COL_INDX);
+
+    expect(appState.transfer.cards).toHaveLength(0);
   });
 
   it("addCards first card not ACE", () => {
     const pile = new PileWithTransfer({
-      transfer,
-      score: new Score(),
+      gameState: appState,
       cards: [new Card({ suit: Suit.HEARTS, type: Type.TEN })],
     });
 
     pile.addToTransfer(0);
 
-    const foundation = new FoundationWithTransfer(new Transfer());
+    const foundation = new FoundationWithTransfer({
+      gameState: new GameState(),
+    });
     const COL_INDX = 1;
 
     expect(foundation.columns[COL_INDX]).toHaveLength(0);
@@ -66,14 +71,13 @@ describe("FoundationWithTransfer", () => {
 
   it("addCards first card - ACE", () => {
     const pile = new PileWithTransfer({
-      transfer,
-      score: new Score(),
+      gameState: appState,
       cards: [new Card({ suit: Suit.HEARTS, type: Type.ACE })],
     });
 
     pile.addToTransfer(0);
 
-    const foundation = new FoundationWithTransfer(transfer);
+    const foundation = new FoundationWithTransfer({ gameState: appState });
     const COL_INDX = 1;
 
     foundation.addCardsFromTransfer(COL_INDX);
@@ -91,7 +95,7 @@ describe("FoundationWithTransfer", () => {
 
 describe("FoundationWithStorage", () => {
   let storage: GameStorage;
-  let transfer: Transfer;
+  let appState: GameState;
   let score: Score;
   const mockedLocalStorage = {
     length: 0,
@@ -104,7 +108,7 @@ describe("FoundationWithStorage", () => {
 
   beforeEach(() => {
     storage = new GameStorage(mockedLocalStorage);
-    transfer = new Transfer();
+    appState = new GameState();
     score = new Score();
   });
 
@@ -119,31 +123,28 @@ describe("FoundationWithStorage", () => {
       JSON.stringify({ columns: [[card1], [], [], []] })
     );
 
-    const foundation = new FoundationWithStorage({ transfer, storage, score });
-
-    expect(foundation.columns[0]).toHaveLength(1);
-  });
-
-  test("init", () => {
-    const [card1] = [new Card({ suit: Suit.DIAMONDS, type: Type.ACE })];
-
-    mockedLocalStorage.getItem.mockReturnValue(
-      JSON.stringify({ columns: [[card1], [], [], []] })
-    );
-
-    const foundation = new FoundationWithStorage({ transfer, storage, score });
+    const foundation = new FoundationWithStorage({
+      gameState: appState,
+      storage,
+    });
 
     expect(foundation.columns[0]).toHaveLength(1);
   });
 
   test("addCardsFromTransfer", () => {
     const [card1] = [new Card({ suit: Suit.DIAMONDS, type: Type.ACE })];
-    const stock = new Stock({ transfer, score, cards: [card1] });
+    const stock = new StockWithTransfer({
+      gameState: appState,
+      cards: [card1],
+    });
 
     stock.addToWaste();
     stock.addToTransfer();
 
-    const foundation = new FoundationWithStorage({ transfer, storage, score });
+    const foundation = new FoundationWithStorage({
+      gameState: appState,
+      storage,
+    });
 
     foundation.addCardsFromTransfer(0);
 
@@ -161,7 +162,10 @@ describe("FoundationWithStorage", () => {
       JSON.stringify({ columns: [[card1], [], [], []] })
     );
 
-    const foundation = new FoundationWithStorage({ transfer, storage, score });
+    const foundation = new FoundationWithStorage({
+      gameState: appState,
+      storage,
+    });
 
     foundation.addToTransfer(0, 0);
     foundation.removeTransferredCards();
@@ -178,7 +182,10 @@ describe("FoundationWithStorage", () => {
       JSON.stringify({ columns: [[card1], [], [], []] })
     );
 
-    const foundation = new FoundationWithStorage({ transfer, storage, score });
+    const foundation = new FoundationWithStorage({
+      gameState: appState,
+      storage,
+    });
 
     jest.resetAllMocks();
 

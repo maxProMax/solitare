@@ -80,4 +80,8 @@ export class Card {
 
     return this.isOpen;
   }
+
+  clone() {
+    return new Card(this);
+  }
 }

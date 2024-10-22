@@ -9,11 +9,12 @@ export const Header: FC<{ game: Game }> = observer(({ game }) => {
 
   return (
     <header className={styles.header} data-testid="header">
+      <button onClick={() => game.back()}>Back</button>
       <button onClick={() => game.reset()}>{t("header.btn.reset")}</button>
       <button onClick={() => game.resetScore()}>
         {t("header.btn.resetScore")}
       </button>
-      <span>{t("header.score", { score: game.score.total })}</span>
+      <span>{t("header.score", { score: game.gameState.score.total })}</span>
     </header>
   );
 });

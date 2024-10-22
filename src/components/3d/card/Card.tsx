@@ -1,0 +1,128 @@
+import { FC, PropsWithChildren, useEffect, RefObject } from "react";
+import { Group, Mesh, Object3D, Vector3 } from "three";
+import { observer } from "mobx-react-lite";
+import { useDraggable } from "./Draggable";
+import { ThreeEvent } from "@react-three/fiber";
+import { useStore } from "./hooks";
+
+export const Card: FC<
+  PropsWithChildren<{
+    object3D: Object3D;
+    open?: boolean;
+    position: [number, number, number];
+    onClick?: () => void;
+    onPointerDown?: (e: ThreeEvent<PointerEvent>) => void;
+    onPointerUp?: (
+      backToStartPosition: () => void,
+      e: ThreeEvent<PointerEvent>
+    ) => void;
+    onPointerMove?: (e: ThreeEvent<PointerEvent>) => void;
+    onPointerEnter?: (e: ThreeEvent<PointerEvent>) => void;
+    onPointerLeave?: (
+      backToStartPosition: () => void,
+      e: ThreeEvent<PointerEvent>
+    ) => void;
+  }>
+> = observer(
+  ({
+    position,
+    object3D,
+    open,
+    children,
+    onClick,
+    onPointerDown,
+    onPointerUp,
+    onPointerMove,
+    onPointerEnter,
+    onPointerLeave,
+  }) => {
+    const { addObject, removeObject } = useStore();
+    const draggable = useDraggable({
+      horizontalLimit: window.innerWidth / 2,
+      verticalLimit: window.innerHeight / 2,
+    });
+
+    useEffect(() => {
+      const obj = draggable.boxRef.current;
+      if (draggable.boxRef && open) {
+        if (obj) {
+          addObject(obj);
+        }
+      }
+      return () => {
+        if (obj) {
+          removeObject(obj);
+        }
+      };
+    }, [draggable.boxRef, open]);
+
+    return (
+      <group
+        ref={draggable.boxRef as RefObject<Group>}
+        name={object3D.name}
+        position={new Vector3(...position)}
+        onClick={(e) => {
+          onClick?.();
+
+          e.stopPropagation();
+        }}
+        onPointerDown={
+          open
+            ? (e: ThreeEvent<PointerEvent>) => {
+                e.stopPropagation();
+
+                if (e.target) {
+                  (e.target as Element).setPointerCapture(e.pointerId);
+                }
+
+                draggable.onPointerDown(e);
+                onPointerDown?.(e);
+              }
+            : undefined
+        }
+        onPointerUp={
+          open
+            ? (e) => {
+                onPointerUp?.(draggable.reset, e);
+                if (e.target) {
+                  (e.target as Element).releasePointerCapture(e.pointerId);
+                }
+              }
+            : undefined
+        }
+        onPointerMove={
+          open
+            ? (e: ThreeEvent<PointerEvent>) => {
+                e.stopPropagation();
+
+                draggable.onPointerMove(e);
+                onPointerMove?.(e);
+              }
+            : undefined
+        }
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={(e) => {
+          e.stopPropagation();
+          onPointerLeave?.(draggable.reset, e);
+          if (e.target) {
+            (e.target as Element).releasePointerCapture(e.pointerId);
+          }
+        }}
+      >
+        <group rotation={[0, open ? 0 : Math.PI, 0]}>
+          {(object3D.children as Mesh[]).map((child) => (
+            <mesh
+              key={child.name}
+              name={child.name}
+              castShadow
+              receiveShadow
+              geometry={child.geometry}
+              material={child.material}
+            />
+          ))}
+        </group>
+        {children}
+      </group>
+    );
+  }
+);

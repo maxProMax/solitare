@@ -1,32 +1,22 @@
 import { makeObservable, action, observable } from "mobx";
 import { Card, CardProperties } from "./card";
-import { Transfer } from "./transfer";
-import { Score } from "./score";
 import { GameStorage } from "./storage";
-
-interface StockProperties {
-  transfer: Transfer;
-  score: Score;
-  cards: Card[];
-}
+import { GameState } from "./game";
+import { IHistoryConsumer } from "./history";
+import { ITransferConsumer } from "./transfer";
 
 export class Stock {
-  private _score: Score;
-  private _transfer: Transfer;
-  private _waste: Card[] = [];
-  private _cards: Card[] = [];
+  protected _waste: Card[] = [];
+  protected _cards: Card[] = [];
 
-  constructor(properties: StockProperties) {
-    const { transfer, score, cards } = properties;
-
-    this._score = score;
-    this._transfer = transfer;
-
+  constructor(cards: Card[]) {
     this.addToCards(...cards);
 
     makeObservable<Stock, "_waste">(this, {
       _waste: observable,
       addToWaste: action,
+      addToCards: action,
+      popWaste: action,
     });
   }
 
@@ -38,8 +28,9 @@ export class Stock {
     return this._waste;
   }
 
-  set waste(cards: Card[]) {
-    this._waste = cards;
+  reset(cards: Card[], waste: Card[]) {
+    this._cards = cards;
+    this._waste = waste;
   }
 
   addToCards(...cards: Card[]) {
@@ -55,14 +46,60 @@ export class Stock {
     }
   }
 
+  popWaste() {
+    return this.waste.pop();
+  }
+}
+
+interface StockProperties {
+  cards: Card[];
+  gameState: GameState;
+}
+
+export class StockWithTransfer
+  extends Stock
+  implements IHistoryConsumer, ITransferConsumer
+{
+  private _gameState: GameState;
+
+  constructor(properties: StockProperties) {
+    const { gameState, cards } = properties;
+
+    super(cards);
+
+    this._gameState = gameState;
+  }
+
   /** add cards to transfer */
   addToTransfer() {
-    this._transfer.addCards(this, this._waste.slice(-1));
+    this._gameState.transfer.addCards(this, this.waste.slice(-1));
   }
 
   removeTransferredCards() {
-    this._waste.pop();
-    this._score.moveFromWaste();
+    this._gameState.history.setHistoryFrom(this, this.getDataForHistory());
+    this.popWaste();
+    this._gameState.score.moveFromWaste();
+  }
+
+  addToWaste() {
+    this._gameState.history.setHistorySingle(this, this.getDataForHistory());
+
+    super.addToWaste();
+  }
+
+  getDataForHistory() {
+    return {
+      waste: this.waste.map((c) => c.clone()),
+      cards: this.cards.map((c) => c.clone()),
+    };
+  }
+
+  applyFromHistory(data?: { cards?: Card[]; waste?: Card[] }) {
+    const { cards, waste } = data || {};
+
+    if (waste && cards) {
+      this.reset(cards, waste);
+    }
   }
 }
 
@@ -70,7 +107,7 @@ interface StockWithStorageProperties extends StockProperties {
   storage: GameStorage<"stock">;
 }
 
-export class StockWithStorage extends Stock {
+export class StockWithStorage extends StockWithTransfer {
   private _storage: GameStorage<"stock">;
 
   static clearState(storage: GameStorage<"stock">) {
@@ -92,7 +129,7 @@ export class StockWithStorage extends Stock {
   populatedCards(cards: Card[]): void {
     if (this.savedState) {
       this.addToCards(...Card.fromArray(this.savedState.cards));
-      this.waste = Card.fromArray(this.savedState.waste);
+      this._waste = Card.fromArray(this.savedState.waste);
     } else {
       this.addToCards(...cards);
     }
@@ -106,6 +143,12 @@ export class StockWithStorage extends Stock {
 
   removeTransferredCards() {
     super.removeTransferredCards();
+
+    this.saveState();
+  }
+
+  applyFromHistory(data?: Record<string, unknown>) {
+    super.applyFromHistory(data);
 
     this.saveState();
   }

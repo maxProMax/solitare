@@ -1,17 +1,18 @@
 import { Transfer } from "./transfer";
 import { PileWithTransfer } from "./pile";
 import { Card, Suit, Type } from "./card";
-import { Score } from "./score";
+import { GameState } from "./game";
 
 describe("Transfer", () => {
   let transfer: Transfer;
   let pile: PileWithTransfer;
+  let appState: GameState;
 
   beforeEach(() => {
-    transfer = new Transfer();
+    appState = new GameState();
+    transfer = appState.transfer;
     pile = new PileWithTransfer({
-      transfer,
-      score: new Score(),
+      gameState: appState,
       cards: [
         new Card({ suit: Suit.HEARTS, type: Type.TEN }),
         new Card({ suit: Suit.DIAMONDS, type: Type.SEVEN }),

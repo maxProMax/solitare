@@ -1,7 +1,7 @@
 import createNextIntlPlugin from "next-intl/plugin";
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = { transpilepackages: ["three"] };
 
 // export default nextConfig;
 
