@@ -20,7 +20,7 @@ import { Leva } from "leva";
 export const Container3D: FC = () => {
   const cameraRef = useRef<OrthographicCamera>(null);
   const game = new Game();
-  // console.log({ game });
+  // console.log( { game });
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>

@@ -66,50 +66,44 @@ export const Card: FC<
 
           e.stopPropagation();
         }}
-        onPointerDown={
-          open
-            ? (e: ThreeEvent<PointerEvent>) => {
-                e.stopPropagation();
+        onPointerDown={(e: ThreeEvent<PointerEvent>) => {
+          e.stopPropagation();
 
-                if (e.target) {
-                  (e.target as Element).setPointerCapture(e.pointerId);
-                }
+          if (open) {
+            if (e.target) {
+              (e.target as Element).setPointerCapture(e.pointerId);
+            }
 
-                draggable.onPointerDown(e);
-                onPointerDown?.(e);
-              }
-            : undefined
-        }
-        onPointerUp={
-          open
-            ? (e) => {
-                onPointerUp?.(draggable.reset, e);
-                if (e.target) {
-                  (e.target as Element).releasePointerCapture(e.pointerId);
-                }
-              }
-            : undefined
-        }
-        onPointerMove={
-          open
-            ? (e: ThreeEvent<PointerEvent>) => {
-                e.stopPropagation();
-
-                draggable.onPointerMove(e);
-                onPointerMove?.(e);
-              }
-            : undefined
-        }
+            draggable.onPointerDown(e);
+            onPointerDown?.(e);
+          }
+        }}
+        onPointerUp={(e) => {
+          if (open) {
+            onPointerUp?.(draggable.reset, e);
+            if (e.target) {
+              (e.target as Element).releasePointerCapture(e.pointerId);
+            }
+          }
+        }}
+        onPointerMove={(e: ThreeEvent<PointerEvent>) => {
+          // e.stopPropagation();
+          if (open) {
+            draggable.onPointerMove(e);
+            onPointerMove?.(e);
+          }
+        }}
         onPointerEnter={onPointerEnter}
         onPointerLeave={(e) => {
-          e.stopPropagation();
+          // e.stopPropagation();
           onPointerLeave?.(draggable.reset, e);
+
           if (e.target) {
             (e.target as Element).releasePointerCapture(e.pointerId);
           }
         }}
       >
-        <group rotation={[0, open ? 0 : Math.PI, 0]}>
+        <group rotation={[0, open ? 0 : Math.PI, 0]} position={[0, 0, 0.5]}>
           {(object3D.children as Mesh[]).map((child) => (
             <mesh
               key={child.name}

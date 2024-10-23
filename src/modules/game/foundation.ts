@@ -160,7 +160,9 @@ export class FoundationWithTransfer
   applyFromHistory(data?: { columns?: Columns; score?: number }) {
     const { columns, score } = data || {};
 
-    columns && this.reset(columns);
+    if (columns) {
+      this.reset(columns);
+    }
 
     if (typeof score !== "undefined") {
       this._gameState.score.replaceTotal(score);

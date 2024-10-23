@@ -172,7 +172,9 @@ export class PileWithTransfer
   applyFromHistory(data?: { cards?: Card[]; score?: number }) {
     const { cards, score } = data || {};
 
-    cards && this.reset(Card.fromArray(cards));
+    if (cards) {
+      this.reset(Card.fromArray(cards));
+    }
 
     if (typeof score !== "undefined") {
       this._gameState.score.replaceTotal(score);

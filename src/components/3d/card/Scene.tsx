@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import { Game } from "@/modules/game/game";
 import { Table } from "./Table";
 import { Card } from "./Card";
+import { Placeholder } from "./Placeholder";
 // import { Box } from "./Box";
 
 const suitMap = {
@@ -60,11 +61,6 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
 
   const cardsMap = createMap(nodes);
 
-  // const dropMap: Record<DropMapAction, (i: number) => boolean | undefined> = {
-  //   foundation: (i: number) => game.foundation?.addCardsFromTransfer(i),
-  //   pile: (i: number) => game.piles?.[i]?.addCardsFromTransfer(),
-  // };
-
   const stockCards = game.stock?.cards.map((c, i) => {
     const node = cardsMap[c.suit][c.type];
 
@@ -101,18 +97,14 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
 
   const piles = game.piles?.map((pile, i) => (
     <group key={i} position={[0 + i * 60, 0, 1]}>
-      <mesh
-        position={[0, 0, 0]}
+      <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () => pile.addCardsFromTransfer();
         }}
         onPointerLeave={() => {
           game.helper_3d.onUpAction = undefined;
         }}
-      >
-        <boxGeometry args={[50, 100, 1]} />
-        <meshStandardMaterial color="red" />
-      </mesh>
+      />
       {pile.cards.reduceRight((child, c, j) => {
         const node = cardsMap[c.suit][c.type];
 
@@ -145,8 +137,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
 
   const foundation = game.foundation?.columns?.map((column, i) => (
     <group key={i} position={[60 * 3 + i * 60, 150, 1]}>
-      <mesh
-        position={[0, 0, 0]}
+      <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () =>
             game.foundation?.addCardsFromTransfer(i) || false;
@@ -154,10 +145,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
         onPointerLeave={() => {
           game.helper_3d.onUpAction = undefined;
         }}
-      >
-        <boxGeometry args={[50, 100, 1]} />
-        <meshStandardMaterial color="red" />
-      </mesh>
+      />
       {column.map((c, j) => {
         const node = cardsMap[c.suit][c.type];
 
@@ -167,8 +155,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
             key={node.name}
             position={[0, 0, j * 1]}
             open={c.isOpen}
-            onPointerDown={(e) => {
-              e.stopPropagation();
+            onPointerDown={() => {
               game.foundation?.addToTransfer(j, i);
             }}
             onPointerUp={(backToStartPosition) => {
