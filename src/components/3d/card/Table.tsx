@@ -1,8 +1,8 @@
-import { FC, useEffect, useRef, useState } from "react";
-import { Mesh, Raycaster, Vector2 } from "three";
-import { useThree } from "@react-three/fiber";
-import { useDraggable } from "./Draggable";
-import { Box } from "./Box";
+import { FC } from "react";
+// import { Mesh, Raycaster, Vector2 } from "three";
+// import { useThree } from "@react-three/fiber";
+// import { useDraggable } from "./Draggable";
+// import { Box } from "./Box";
 
 export const Table: FC = () => {
   const TABLE_WIDTH = window.innerWidth;

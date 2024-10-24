@@ -1,25 +1,25 @@
 "use client";
 
 import { FC, useRef } from "react";
-import { useThree } from "@react-three/fiber";
+// import { useThree } from "@react-three/fiber";
 import {
-  useHelper,
+  // useHelper,
   PerspectiveCamera,
-  OrthographicCamera,
+  // OrthographicCamera,
 } from "@react-three/drei";
 import {
-  CameraHelper,
+  // CameraHelper,
   PerspectiveCamera as PerspectiveCameraThree,
 } from "three";
-import { useControls, folder } from "leva";
+// import { useControls, folder } from "leva";
 
 export const Camera: FC = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  // const width = window.innerWidth;
+  // const height = window.innerHeight;
 
   const cameraRef = useRef<PerspectiveCameraThree>(null);
 
-  useHelper(cameraRef, CameraHelper);
+  // useHelper(cameraRef, CameraHelper);
 
   return (
     <>
@@ -53,12 +53,12 @@ export const Camera: FC = () => {
 };
 
 export const Camera_2: FC = () => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  // const width = window.innerWidth;
+  // const height = window.innerHeight;
 
   const cameraRef = useRef<PerspectiveCameraThree>(null);
 
-  useHelper(cameraRef, CameraHelper);
+  // useHelper(cameraRef, CameraHelper);
 
   return (
     <>

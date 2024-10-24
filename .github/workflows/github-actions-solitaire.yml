@@ -1,0 +1,15 @@
+name: GitHub Actions Solitaire
+run-name: ${{ github.actor }}  GitHub Actions 🚀
+on: [push]
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run build

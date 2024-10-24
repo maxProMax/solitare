@@ -69,7 +69,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
         key={node.name}
         object3D={node}
         onClick={() => game.stock?.addToWaste()}
-        position={[0, 0, i * 1]}
+        position={[0, 0, i * 1 + 1]}
       />
     );
   });
@@ -81,7 +81,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
         object3D={node}
         key={node.name}
         open={c.isOpen}
-        position={[0, 0, i * 1]}
+        position={[0, 0, i * 1 + 1]}
         onPointerDown={(e) => {
           e.stopPropagation();
           game.stock?.addToTransfer();

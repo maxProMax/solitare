@@ -5,7 +5,6 @@ import {
   FoundationWithStorage,
   Foundation,
 } from "./foundation";
-import { Score } from "./score";
 import { GameStorage } from "./storage";
 import { StockWithTransfer } from "./stock";
 import { GameState } from "./game";
@@ -96,7 +95,7 @@ describe("FoundationWithTransfer", () => {
 describe("FoundationWithStorage", () => {
   let storage: GameStorage;
   let appState: GameState;
-  let score: Score;
+
   const mockedLocalStorage = {
     length: 0,
     clear: jest.fn(),
@@ -109,7 +108,6 @@ describe("FoundationWithStorage", () => {
   beforeEach(() => {
     storage = new GameStorage(mockedLocalStorage);
     appState = new GameState();
-    score = new Score();
   });
 
   afterEach(() => {

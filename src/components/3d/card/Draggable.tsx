@@ -1,7 +1,7 @@
 import { useThree, ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
-import { Raycaster, Vector2, Object3D, Vector3, Clock } from "three";
-import { useStore } from "./hooks";
+import { Raycaster, Vector2, Object3D, Vector3 } from "three";
+// import { useStore } from "./hooks";
 import * as easing from "maath/easing";
 
 export const useDraggable = ({
@@ -12,7 +12,7 @@ export const useDraggable = ({
   verticalLimit: number;
 }) => {
   const three = useThree();
-  const { objects } = useStore();
+  // const { objects } = useStore();
   const boxRef = useRef<Object3D>(null);
   const raycaster = new Raycaster();
 
@@ -21,9 +21,10 @@ export const useDraggable = ({
   let isDragging_2 = false;
 
   let startPosition: [number, number, number] | undefined;
-  let zPosition: number = 0;
+  // let zPosition: number = 0;
   const worldPosition = new Vector3();
   const mouseShift = new Vector3();
+  // const MAX_HEIGHT = 52;
 
   let animate: undefined | ((delta: number) => void);
 
@@ -68,26 +69,27 @@ export const useDraggable = ({
       }
     },
     onPointerDown(e: ThreeEvent<PointerEvent>) {
+      if (!boxRef.current) {
+        return;
+      }
+
       isDragging_2 = true;
+
       startPosition = boxRef.current?.position.toArray();
-      zPosition = startPosition?.[2] || 0;
+      // zPosition = startPosition?.[2] || 0;
 
-      boxRef.current?.position.setZ(zPosition + PLUS_Z);
+      boxRef.current?.getWorldPosition(worldPosition);
 
-      // b = a(boxRef.current?.position);
-
-      // boxRef.current?.getWorldPosition(worldPosition);
+      // boxRef.current?.position.setZ(MAX_HEIGHT - worldPosition.z + zPosition);
+      // boxRef.current?.position.setZ(PLUS_Z + zPosition);
 
       const mouse = new Vector2();
       mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-      const raycaster = new Raycaster();
       raycaster.setFromCamera(mouse, three.camera);
 
-      const [intersect] = raycaster.intersectObjects([boxRef.current], true);
-      const [x, y, z] = intersect.point.toArray();
-
-      console.log(x, y, z);
+      let [intersect] = raycaster.intersectObjects([boxRef.current], true);
+      let [x, y] = intersect.point.toArray();
 
       const { x: selfX = 0, y: selfY = 0 } = boxRef.current?.position || {};
 
@@ -95,20 +97,30 @@ export const useDraggable = ({
         .fromArray([x + -1 * selfX, y + -1 * selfY, 0])
         .sub(worldPosition);
 
-      // const nextPosition = new Vector3(
-      //   x - worldPosition.x - mouseShift.x,
-      //   y - worldPosition.y - mouseShift.y,
-      //   zPosition + PLUS_Z
-      // );
+      // update position after zoo
+      boxRef.current.position.z += PLUS_Z;
+      boxRef.current.updateMatrixWorld();
 
-      // boxRef.current?.position.copy(nextPosition);
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, three.camera);
 
-      // console.log("d", boxRef.current?.position.toArray());
-      // boxRef.current?.position.setZ(zPosition + PLUS_Z);
+      [intersect] = raycaster.intersectObjects([boxRef.current], true);
+      [x, y] = intersect.point.toArray();
+
+      const nextPosition = new Vector3(
+        x - worldPosition.x - mouseShift.x,
+        y - worldPosition.y - mouseShift.y,
+        boxRef.current.position.z
+      );
+
+      boxRef.current?.position.copy(nextPosition);
     },
 
     onPointerMove(e: ThreeEvent<PointerEvent>) {
-      console.log("move");
+      if (!boxRef.current) {
+        return;
+      }
 
       if (isDragging_2) {
         const mouse = new Vector2();
@@ -123,7 +135,7 @@ export const useDraggable = ({
           const intersect = intersects[0];
 
           const [x, y, z] = intersect.point.toArray();
-          console.log(x, y, z);
+          console.log(z);
 
           if (Math.abs(x) <= horizontalLimit && Math.abs(y) <= verticalLimit) {
             const nextPosition = new Vector3(
@@ -131,8 +143,6 @@ export const useDraggable = ({
               y - worldPosition.y - mouseShift.y,
               boxRef.current?.position.z
             );
-
-            console.log(nextPosition.toArray());
 
             boxRef.current?.position.copy(nextPosition);
           } else {

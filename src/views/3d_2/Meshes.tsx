@@ -1,8 +1,8 @@
 import { FC, useRef, useState } from "react";
 
-import { Canvas, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 
-import { Raycaster, Vector2, Mesh } from "three";
+import { Raycaster, Vector2 } from "three";
 
 export const Meshes: FC = () => {
   const [position, setPosition] = useState<[number, number, number]>([0, 0, 0]);
@@ -24,6 +24,10 @@ export const Meshes: FC = () => {
         onPointerMove={(e) => {
           e.stopPropagation();
 
+          if (!cubeRef.current) {
+            return;
+          }
+
           console.log(cubeRef.current);
 
           const raycaster = new Raycaster();
@@ -35,7 +39,8 @@ export const Meshes: FC = () => {
 
           const intersects = raycaster.intersectObjects(
             cubeRef.current
-              ? [cubeRef.current, groundRef.current, cube2Ref.current]
+              ? // ? [cubeRef.current, groundRef.current, cube2Ref.current]
+                [cubeRef.current]
               : [],
             true
           );

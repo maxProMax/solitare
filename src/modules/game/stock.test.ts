@@ -1,6 +1,5 @@
 import { Card, Suit, Type } from "./card";
 import { GameState } from "./game";
-import { Score } from "./score";
 import { StockWithTransfer, StockWithStorage } from "./stock";
 import { GameStorage } from "./storage";
 

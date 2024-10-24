@@ -1,6 +1,5 @@
 import { FC, useRef } from "react";
-import { Environment, useHelper } from "@react-three/drei";
-import { PointLightHelper } from "three";
+import { Environment } from "@react-three/drei";
 import { useControls } from "leva";
 
 export const Light: FC = () => {
@@ -13,7 +12,7 @@ export const Light: FC = () => {
     castShadow: true,
     intensity: 20,
   });
-  const point = useRef();
+  const point = useRef(null);
 
   // useHelper(point, PointLightHelper);
 
