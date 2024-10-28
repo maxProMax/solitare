@@ -1,5 +1,5 @@
 import { FC, Fragment } from "react";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, Html } from "@react-three/drei";
 import { Suit, Type } from "@/modules/game/card";
 import { Object3D } from "three";
 import { observer } from "mobx-react-lite";
@@ -9,7 +9,7 @@ import { Game } from "@/modules/game/game";
 import { Table } from "./Table";
 import { Card } from "./Card";
 import { Placeholder } from "./Placeholder";
-// import { Box } from "./Box";
+import { useTranslations } from "next-intl";
 
 const suitMap = {
   [Suit.CLUBS]: "Clubs",
@@ -56,8 +56,8 @@ const createMap = (nodes: Record<string, Object3D>) => {
 };
 
 export const Scene: FC<{ game: Game }> = observer(({ game }) => {
+  const t = useTranslations();
   const { nodes } = useGLTF("../assets/glp/cards/scene.gltf");
-  console.log({ game });
 
   const cardsMap = createMap(nodes);
 
@@ -96,7 +96,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   });
 
   const piles = game.piles?.map((pile, i) => (
-    <group key={i} position={[0 + i * 60, 0, 1]}>
+    <group key={i} position={[0 + i * 60 - 180, 0, 1]}>
       <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () => pile.addCardsFromTransfer();
@@ -136,7 +136,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   ));
 
   const foundation = game.foundation?.columns?.map((column, i) => (
-    <group key={i} position={[60 * 3 + i * 60, 150, 1]}>
+    <group key={i} position={[i * 60, 150, 1]}>
       <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () =>
@@ -177,13 +177,31 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   ));
 
   return (
-    <group name="root">
-      <group position={[-230, 150, 0]}>{stockCards}</group>
-      <group position={[-150, 150, 0]}>{stockWaste}</group>
-      {foundation}
-      {piles}
-      <Table />
-    </group>
+    <>
+      <Html position={[-100, 240, 0]}>
+        <div style={{ display: "flex", gap: "4px", color: "white" }}>
+          <button style={{ whiteSpace: "nowrap" }} onClick={() => game.reset()}>
+            {t("header.btn.reset")}
+          </button>
+          <button
+            style={{ whiteSpace: "nowrap" }}
+            onClick={() => game.resetScore()}
+          >
+            {t("header.btn.resetScore")}
+          </button>
+          <span>{game.gameState.score.total}</span>
+        </div>
+      </Html>
+      <group name="root">
+        <group>
+          <group position={[-180, 150, 0]}>{stockCards}</group>
+          <group position={[-120, 150, 0]}>{stockWaste}</group>
+          {foundation}
+          {piles}
+        </group>
+        <Table />
+      </group>
+    </>
   );
 });
 

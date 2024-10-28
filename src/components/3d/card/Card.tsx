@@ -1,9 +1,8 @@
-import { FC, PropsWithChildren, useEffect, RefObject } from "react";
+import { FC, PropsWithChildren, RefObject } from "react";
 import { Group, Mesh, Object3D, Vector3 } from "three";
 import { observer } from "mobx-react-lite";
 import { useDraggable } from "./Draggable";
 import { ThreeEvent } from "@react-three/fiber";
-import { useStore } from "./hooks";
 
 export const Card: FC<
   PropsWithChildren<{
@@ -36,25 +35,10 @@ export const Card: FC<
     onPointerEnter,
     onPointerLeave,
   }) => {
-    const { addObject, removeObject } = useStore();
     const draggable = useDraggable({
       horizontalLimit: window.innerWidth / 2,
       verticalLimit: window.innerHeight / 2,
     });
-
-    useEffect(() => {
-      const obj = draggable.boxRef.current;
-      if (draggable.boxRef && open) {
-        if (obj) {
-          addObject(obj);
-        }
-      }
-      return () => {
-        if (obj) {
-          removeObject(obj);
-        }
-      };
-    }, [draggable.boxRef, open]);
 
     return (
       <group

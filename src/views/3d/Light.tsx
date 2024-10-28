@@ -8,6 +8,7 @@ import {
 } from "@react-three/drei";
 // import { PointLightHelper } from "three";
 // import { useControls } from "leva";
+import bg from "./bg.jpg";
 
 export const Light: FC = () => {
   // const pointCtl = useControls("Point Light", {
@@ -53,7 +54,7 @@ export const Light: FC = () => {
         position={[-100, 20, 300]}
         castShadow={true}
       />
-      <Environment preset="lobby" />
+      <Environment frames={1} resolution={1} files={bg.src} />
     </>
   );
 };

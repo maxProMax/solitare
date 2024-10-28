@@ -1,7 +1,7 @@
-import { FC, PropsWithChildren, useEffect, RefObject } from "react";
+import { FC, PropsWithChildren, RefObject } from "react";
 import { useDraggable } from "./Draggable";
 import { ThreeEvent } from "@react-three/fiber";
-import { useStore } from "./hooks";
+
 import { Group } from "three";
 
 export const Box: FC<PropsWithChildren<{ i: number; color?: string }>> = ({
@@ -9,20 +9,10 @@ export const Box: FC<PropsWithChildren<{ i: number; color?: string }>> = ({
   i,
   color = "red",
 }) => {
-  const { addObject } = useStore();
   const draggable = useDraggable({
     horizontalLimit: window.innerWidth / 2,
     verticalLimit: window.innerHeight / 2,
-    // zeroCoord: [30 * (i - 1), 10 * (i - 1), 0],
   });
-
-  useEffect(() => {
-    if (draggable.boxRef.current) {
-      addObject(draggable.boxRef.current);
-    }
-  }, [draggable.boxRef]);
-
-  //   console.log(x, y, i, x - 30 * (i - 1), y - 10 * (i - 1));
 
   return (
     <group

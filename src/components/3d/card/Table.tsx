@@ -1,12 +1,29 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+
 // import { Mesh, Raycaster, Vector2 } from "three";
 // import { useThree } from "@react-three/fiber";
 // import { useDraggable } from "./Draggable";
 // import { Box } from "./Box";
 
 export const Table: FC = () => {
-  const TABLE_WIDTH = window.innerWidth;
-  const TABLE_HEIGHT = window.innerHeight;
+  const [size, setSize] = useState({
+    w: window.innerWidth,
+    h: window.innerHeight,
+  });
+  useEffect(() => {
+    const onResize = () => {
+      setSize({
+        w: window.innerWidth,
+        h: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
   // const { position, onPointerDown, onPointerUp, onPointerMove, boxRef } =
   //   useDraggable({
@@ -78,7 +95,7 @@ export const Table: FC = () => {
         castShadow
         receiveShadow
       >
-        <boxGeometry args={[TABLE_WIDTH, TABLE_HEIGHT, 1]} />
+        <boxGeometry args={[size.w * 2, size.h * 2, 1]} />
         <meshStandardMaterial color={"green"} />
       </mesh>
     </>
