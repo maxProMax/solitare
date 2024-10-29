@@ -36,8 +36,8 @@ export const Card: FC<
     onPointerLeave,
   }) => {
     const draggable = useDraggable({
-      horizontalLimit: window.innerWidth / 2,
-      verticalLimit: window.innerHeight / 2,
+      horizontalLimit: window.innerWidth,
+      verticalLimit: window.innerHeight,
     });
 
     return (

@@ -96,7 +96,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   });
 
   const piles = game.piles?.map((pile, i) => (
-    <group key={i} position={[0 + i * 60 - 180, 0, 1]}>
+    <group key={i} position={[0 + i * 60 - 180, 100, 1]}>
       <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () => pile.addCardsFromTransfer();
@@ -111,7 +111,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
         return (
           <Card
             object3D={node}
-            position={[0, -16, 1]}
+            position={[0, j === 0 ? 0 : -16, 1]}
             open={c.isOpen}
             onPointerDown={() => {
               pile.addToTransfer(j);
@@ -136,7 +136,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   ));
 
   const foundation = game.foundation?.columns?.map((column, i) => (
-    <group key={i} position={[i * 60, 150, 1]}>
+    <group key={i} position={[i * 60, 230, 1]}>
       <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () =>
@@ -178,8 +178,15 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
 
   return (
     <>
-      <Html position={[-100, 240, 0]}>
-        <div style={{ display: "flex", gap: "4px", color: "white" }}>
+      <Html position={[-400, 100, 0]}>
+        <div
+          style={{
+            display: "flex",
+            gap: "4px",
+            color: "white",
+            flexDirection: "column",
+          }}
+        >
           <button style={{ whiteSpace: "nowrap" }} onClick={() => game.reset()}>
             {t("header.btn.reset")}
           </button>
@@ -194,8 +201,8 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
       </Html>
       <group name="root">
         <group>
-          <group position={[-180, 150, 0]}>{stockCards}</group>
-          <group position={[-120, 150, 0]}>{stockWaste}</group>
+          <group position={[-180, 230, 0]}>{stockCards}</group>
+          <group position={[-120, 230, 0]}>{stockWaste}</group>
           {foundation}
           {piles}
         </group>

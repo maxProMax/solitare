@@ -74,7 +74,7 @@ export const useDraggable = ({
 
       raycaster.setFromCamera(mouse, three.camera);
 
-      let [intersect] = raycaster.intersectObjects([boxRef.current], true);
+      let [intersect] = raycaster.intersectObjects(three.scene.children, true);
 
       if (!intersect) {
         return;
@@ -97,7 +97,7 @@ export const useDraggable = ({
       mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, three.camera);
 
-      [intersect] = raycaster.intersectObjects([boxRef.current], true);
+      [intersect] = raycaster.intersectObjects(three.scene.children, true);
       [x, y] = intersect.point.toArray();
 
       const nextPosition = new Vector3(
@@ -110,6 +110,8 @@ export const useDraggable = ({
     },
 
     onPointerMove(e: ThreeEvent<PointerEvent>) {
+      console.log("move");
+
       if (!boxRef.current) {
         return;
       }
@@ -121,7 +123,10 @@ export const useDraggable = ({
 
         raycaster.setFromCamera(mouse, three.camera);
 
-        const intersects = raycaster.intersectObjects([boxRef.current]);
+        const intersects = raycaster.intersectObjects(
+          three.scene.children,
+          true
+        );
 
         if (intersects.length > 0) {
           const intersect = intersects[0];
@@ -136,10 +141,11 @@ export const useDraggable = ({
             );
 
             boxRef.current?.position.copy(nextPosition);
+
+            return;
           } else {
             reset();
           }
-          return;
         }
       }
 

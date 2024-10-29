@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState, MutableRefObject } from "react";
 // import { useThree } from "@react-three/fiber";
 // import { pick } from "lodash";
 import {
@@ -13,37 +13,20 @@ import {
   CameraHelper,
   PerspectiveCamera as PerspectiveCameraThree,
   // Vector3,
+  Object3D,
 } from "three";
-import { useControls } from "leva";
+// import { useControls } from "leva";
 
 export const Camera: FC = () => {
-  // const width = window.innerWidth / 2;
-  // const height = window.innerHeight;
-
   const cameraRef = useRef<PerspectiveCameraThree>(null);
 
-  useHelper(cameraRef, CameraHelper);
-
-  // const pointCtl = useControls("OrthographicCamera Light", {
-  //   left: width / -2,
-  //   right: width / 2,
-  //   top: height / 2,
-  //   bottom: height / -2,
-  //   near: 0.1,
-  //   far: 100,
-  //   position: { x: 0, y: 0, z: 100 },
-  //   makeDefault: true,
-  // });
-
-  // const getCameraZ = () => -1.99 * window.innerWidth + 3055;
-  const getCameraZ = () => -0.1173 * window.innerWidth + 1210;
-  const getCameraFov = () => 0.091 * window.innerWidth - 13.12;
+  useHelper(cameraRef as MutableRefObject<Object3D>, CameraHelper);
 
   const breakPoints: [number, { fov: number; z: number }][] = [
-    [390, { fov: 75, z: 600 }],
-    [800, { fov: 55, z: 600 }],
-    [1440, { fov: 55, z: 500 }],
-    [1920, { fov: 60, z: 450 }],
+    [390, { fov: 60, z: 800 }],
+    [800, { fov: 43, z: 760 }],
+    [1440, { fov: 62, z: 500 }],
+    [1920, { fov: 68, z: 450 }],
   ];
   const calc = () => {
     const width = window.innerWidth;
@@ -56,15 +39,13 @@ export const Camera: FC = () => {
         return current[1];
       }
 
-      if (current[0] >= width && width <= next[0]) {
+      if (current[0] <= width && width <= next[0]) {
         return current[1];
       }
     }
     return breakPoints[0][1];
   };
   const [sizes, setSizes] = useState(calc());
-  const [cameraZ, setCameraZ] = useState(getCameraZ());
-  const [cameraFov, setCameraFov] = useState(getCameraFov());
 
   // const [pCameraCtl] = useControls(
   //   () => ({
@@ -80,9 +61,7 @@ export const Camera: FC = () => {
 
   useEffect(() => {
     const onResize = () => {
-      setCameraZ(getCameraZ());
       setSizes(calc());
-      // setCameraFov(getCameraFov());
     };
 
     window.addEventListener("resize", onResize);
