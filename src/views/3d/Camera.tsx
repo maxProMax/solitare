@@ -23,7 +23,7 @@ export const Camera: FC = () => {
   useHelper(cameraRef as MutableRefObject<Object3D>, CameraHelper);
 
   const breakPoints: [number, { fov: number; z: number }][] = [
-    [390, { fov: 60, z: 800 }],
+    [390, { fov: 69, z: 800 }],
     [800, { fov: 43, z: 760 }],
     [1440, { fov: 62, z: 500 }],
     [1920, { fov: 68, z: 450 }],

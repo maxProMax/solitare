@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 // import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 // import { useControls } from "leva";
 import { Game } from "@/modules/game/game";
-import { Table } from "./Table";
+import { Table } from "../table/Table";
 import { Card } from "./Card";
 import { Placeholder } from "./Placeholder";
 import { useTranslations } from "next-intl";
@@ -96,7 +96,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   });
 
   const piles = game.piles?.map((pile, i) => (
-    <group key={i} position={[0 + i * 60 - 180, 100, 1]}>
+    <group key={i} position={[0 + i * 70 - 210, 100, 1]}>
       <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () => pile.addCardsFromTransfer();
@@ -111,7 +111,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
         return (
           <Card
             object3D={node}
-            position={[0, j === 0 ? 0 : -16, 1]}
+            position={[0, j === 0 ? 0 : c.isOpen ? -16 : -4, 1]}
             open={c.isOpen}
             onPointerDown={() => {
               pile.addToTransfer(j);
@@ -136,7 +136,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   ));
 
   const foundation = game.foundation?.columns?.map((column, i) => (
-    <group key={i} position={[i * 60, 230, 1]}>
+    <group key={i} position={[i * 70, 230, 1]}>
       <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () =>
@@ -201,7 +201,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
       </Html>
       <group name="root">
         <group>
-          <group position={[-180, 230, 0]}>{stockCards}</group>
+          <group position={[-210, 230, 0]}>{stockCards}</group>
           <group position={[-120, 230, 0]}>{stockWaste}</group>
           {foundation}
           {piles}

@@ -26,7 +26,18 @@ export const Container3D: FC = () => {
       }}
     >
       <Leva />
-      <Canvas shadows camera={{ position: [0, 0, 500] }}>
+      <Canvas
+        dpr={[1, window.devicePixelRatio]}
+        gl={{
+          antialias: true,
+          alpha: true,
+          powerPreference: "high-performance", // Optimizes for mobile GPU
+        }}
+        linear
+        flat
+        shadows
+        camera={{ position: [0, 0, 500] }}
+      >
         {/* {cameraRef.current && <cameraHelper args={[cameraRef.current]} />} */}
         <Camera />
         {/* <Grid args={[10, 10]} /> */}

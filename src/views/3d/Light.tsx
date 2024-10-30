@@ -26,32 +26,32 @@ export const Light: FC = () => {
 
   return (
     <>
-      <ambientLight intensity={0.9} />
+      <ambientLight intensity={1} />
       {/* <directionalLight castShadow position={[0, 0, 2]} /> */}
       <pointLight
         // ref={point}
-        color={"white"}
-        intensity={200}
+        color={"yellow"}
+        intensity={600}
         decay={1}
         // position={[
         //   pointCtl.position.x,
         //   pointCtl.position.y,
         //   pointCtl.position.z,
         // ]}
-        position={[100, 20, 300]}
+        position={[100, 0, 300]}
         castShadow={true}
       />
       <pointLight
         // ref={point}
-        color={"white"}
-        intensity={200}
+        color={"yellow"}
+        intensity={600}
         decay={1}
         // position={[
         //   pointCtl.position.x,
         //   pointCtl.position.y,
         //   pointCtl.position.z,
         // ]}
-        position={[-100, 20, 300]}
+        position={[-200, 0, 300]}
         castShadow={true}
       />
       <Environment frames={1} resolution={1} files={bg.src} />

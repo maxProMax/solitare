@@ -110,8 +110,6 @@ export const useDraggable = ({
     },
 
     onPointerMove(e: ThreeEvent<PointerEvent>) {
-      console.log("move");
-
       if (!boxRef.current) {
         return;
       }

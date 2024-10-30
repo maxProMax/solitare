@@ -3,6 +3,7 @@ import { Group, Mesh, Object3D, Vector3 } from "three";
 import { observer } from "mobx-react-lite";
 import { useDraggable } from "./Draggable";
 import { ThreeEvent } from "@react-three/fiber";
+import { X_SCALE } from "@/constants";
 
 export const Card: FC<
   PropsWithChildren<{
@@ -87,7 +88,11 @@ export const Card: FC<
           }
         }}
       >
-        <group rotation={[0, open ? 0 : Math.PI, 0]} position={[0, 0, 0.5]}>
+        <group
+          scale={[X_SCALE, 1, 1]}
+          rotation={[0, open ? 0 : Math.PI, 0]}
+          position={[0, 0, 0.5]}
+        >
           {(object3D.children as Mesh[]).map((child) => (
             <mesh
               key={child.name}
