@@ -23,7 +23,8 @@ export const Table: FC = () => {
       normalMap: textureNormal_3.src,
     },
     (textures) => {
-      textures.forEach((texture) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (textures as any).forEach((texture: any) => {
         texture.wrapS = RepeatWrapping;
         texture.wrapT = RepeatWrapping;
         texture.repeat.set(8, 8);
