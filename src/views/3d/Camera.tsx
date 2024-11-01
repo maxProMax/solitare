@@ -1,35 +1,36 @@
 "use client";
 
-import { FC, useEffect, useRef, useState, MutableRefObject } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 // import { useThree } from "@react-three/fiber";
 // import { pick } from "lodash";
 import {
-  useHelper,
+  // useHelper,
   PerspectiveCamera,
   // OrthographicCamera,
   // OrbitControls,
 } from "@react-three/drei";
 import {
-  CameraHelper,
+  // CameraHelper,
   PerspectiveCamera as PerspectiveCameraThree,
   // Vector3,
-  Object3D,
+  // Object3D,
 } from "three";
 // import { useControls } from "leva";
 
 export const Camera: FC = () => {
   const cameraRef = useRef<PerspectiveCameraThree>(null);
 
-  useHelper(cameraRef as MutableRefObject<Object3D>, CameraHelper);
+  // useHelper(cameraRef as MutableRefObject<Object3D>, CameraHelper);
 
   const breakPoints: [number, { fov: number; z: number }][] = [
     [390, { fov: 69, z: 800 }],
-    [800, { fov: 43, z: 760 }],
+    [840, { fov: 43, z: 760 }],
+    [1024, { fov: 58, z: 760 }],
     [1440, { fov: 62, z: 500 }],
     [1920, { fov: 68, z: 450 }],
   ];
   const calc = () => {
-    const width = window.innerWidth;
+    const width = window.outerWidth;
 
     for (let i = 0; i < breakPoints.length; i++) {
       const current = breakPoints[i];
@@ -39,7 +40,7 @@ export const Camera: FC = () => {
         return current[1];
       }
 
-      if (current[0] <= width && width <= next[0]) {
+      if (current[0] <= width && width < next[0]) {
         return current[1];
       }
     }
@@ -61,7 +62,10 @@ export const Camera: FC = () => {
 
   useEffect(() => {
     const onResize = () => {
-      setSizes(calc());
+      // ios issue
+      setTimeout(() => {
+        setSizes(calc());
+      }, 100);
     };
 
     window.addEventListener("resize", onResize);
@@ -71,7 +75,6 @@ export const Camera: FC = () => {
     };
   }, []);
 
-  // fov,  aspect,  near,  far, number |
   return (
     <>
       {/* <OrbitControls /> */}

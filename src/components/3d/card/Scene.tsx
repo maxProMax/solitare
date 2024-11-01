@@ -1,5 +1,5 @@
 import { FC, Fragment } from "react";
-import { useGLTF, Html } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import { Suit, Type } from "@/modules/game/card";
 import { Object3D } from "three";
 import { observer } from "mobx-react-lite";
@@ -9,7 +9,7 @@ import { Game } from "@/modules/game/game";
 import { Table } from "../table/Table";
 import { Card } from "./Card";
 import { Placeholder } from "./Placeholder";
-import { useTranslations } from "next-intl";
+import { Actions } from "../actions/Actions";
 
 const suitMap = {
   [Suit.CLUBS]: "Clubs",
@@ -56,7 +56,6 @@ const createMap = (nodes: Record<string, Object3D>) => {
 };
 
 export const Scene: FC<{ game: Game }> = observer(({ game }) => {
-  const t = useTranslations();
   const { nodes } = useGLTF("../assets/glp/cards/scene.gltf");
 
   const cardsMap = createMap(nodes);
@@ -178,27 +177,11 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
 
   return (
     <>
-      <Html position={[-400, 100, 0]}>
-        <div
-          style={{
-            display: "flex",
-            gap: "4px",
-            color: "white",
-            flexDirection: "column",
-          }}
-        >
-          <button style={{ whiteSpace: "nowrap" }} onClick={() => game.reset()}>
-            {t("header.btn.reset")}
-          </button>
-          <button
-            style={{ whiteSpace: "nowrap" }}
-            onClick={() => game.resetScore()}
-          >
-            {t("header.btn.resetScore")}
-          </button>
-          <span>{game.gameState.score.total}</span>
-        </div>
-      </Html>
+      <Actions
+        reset={() => game.reset()}
+        resetScore={() => game.resetScore()}
+        total={game.gameState.score.total}
+      />
       <group name="root">
         <group>
           <group position={[-210, 230, 0]}>{stockCards}</group>

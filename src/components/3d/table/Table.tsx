@@ -8,11 +8,6 @@ import textureDisp_3 from "./Fabric_texture/Fabric037_2K-JPG_Displacement.jpg";
 import textureAO_3 from "./Fabric_texture/Fabric037_2K-JPG_AmbientOcclusion.jpg";
 import textureNormal_3 from "./Fabric_texture/Fabric037_2K-JPG_NormalGL.jpg";
 
-// import { Mesh, Raycaster, Vector2 } from "three";
-// import { useThree } from "@react-three/fiber";
-// import { useDraggable } from "./Draggable";
-// import { Box } from "./Box";
-
 export const Table: FC = () => {
   const texture = useTexture(
     {
@@ -49,14 +44,6 @@ export const Table: FC = () => {
       window.removeEventListener("resize", onResize);
     };
   }, []);
-
-  // const { position, onPointerDown, onPointerUp, onPointerMove, boxRef } =
-  //   useDraggable({
-  //     initPosition: [0, 0, 10.5],
-  //     horizontalLimit: TABLE_WIDTH / 2,
-  //     verticalLimit: TABLE_HEIGHT / 2,
-  //   });
-  console.log(texture);
 
   return (
     <>

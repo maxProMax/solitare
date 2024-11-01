@@ -45,7 +45,7 @@ export const useDraggable = ({
         easing.damp3(
           boxRef.current?.position,
           startPosition.toArray(),
-          1 / 6,
+          1 / 8,
           delta
         );
       };
