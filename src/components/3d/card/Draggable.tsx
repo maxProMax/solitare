@@ -1,7 +1,6 @@
 import { useThree, ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { Raycaster, Vector2, Object3D, Vector3 } from "three";
-// import { useStore } from "./hooks";
 import * as easing from "maath/easing";
 
 export const useDraggable = ({
@@ -18,7 +17,6 @@ export const useDraggable = ({
   let isDragging_2 = false;
 
   let startPosition: Vector3 | undefined;
-  // let zPosition: number = 0;
   const worldPosition = new Vector3();
   const mouseShift = new Vector3();
   const MAX_HEIGHT = 25;

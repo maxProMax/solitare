@@ -55,6 +55,8 @@ export const Card: FC<
           e.stopPropagation();
 
           if (open) {
+            window.document.body.classList.add("cursor-grabbing");
+
             if (e.target) {
               (e.target as Element).setPointerCapture(e.pointerId);
             }
@@ -66,6 +68,11 @@ export const Card: FC<
         onPointerUp={(e) => {
           if (open) {
             onPointerUp?.(draggable.reset, e);
+            window.document.body.classList.remove(
+              "cursor-grab",
+              "cursor-grabbing"
+            );
+
             if (e.target) {
               (e.target as Element).releasePointerCapture(e.pointerId);
             }
@@ -74,6 +81,8 @@ export const Card: FC<
         onPointerMove={(e: ThreeEvent<PointerEvent>) => {
           // e.stopPropagation();
           if (open) {
+            window.document.body.classList.add("cursor-grab");
+
             draggable.onPointerMove(e);
             onPointerMove?.(e);
           }
@@ -82,6 +91,10 @@ export const Card: FC<
         onPointerLeave={(e) => {
           // e.stopPropagation();
           onPointerLeave?.(draggable.reset, e);
+          window.document.body.classList.remove(
+            "cursor-grab",
+            "cursor-grabbing"
+          );
 
           if (e.target) {
             (e.target as Element).releasePointerCapture(e.pointerId);

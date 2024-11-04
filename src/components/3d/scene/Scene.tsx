@@ -3,13 +3,10 @@ import { useGLTF } from "@react-three/drei";
 import { Suit, Type } from "@/modules/game/card";
 import { Object3D } from "three";
 import { observer } from "mobx-react-lite";
-// import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
-// import { useControls } from "leva";
 import { Game } from "@/modules/game/game";
-import { Table } from "../table/Table";
-import { Card } from "./Card";
-import { Placeholder } from "./Placeholder";
-import { Actions } from "../actions/Actions";
+import { Table } from "@/components/3d/table/Table";
+import { Card, Placeholder } from "@/components/3d/card";
+import { Actions } from "@/components/3d/actions/Actions";
 
 const suitMap = {
   [Suit.CLUBS]: "Clubs",

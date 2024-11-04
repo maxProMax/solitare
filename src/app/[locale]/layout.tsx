@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Rubik_Mono_One } from "next/font/google";
+import type { Viewport } from "next";
 import "@/styles/globals.css";
+
+export const viewport: Viewport = {
+  viewportFit: "cover",
+};
 
 const inter = Rubik_Mono_One({
   subsets: ["latin", "cyrillic"],

@@ -22,12 +22,12 @@ export const Camera: FC = () => {
 
   // useHelper(cameraRef as MutableRefObject<Object3D>, CameraHelper);
 
-  const breakPoints: [number, { fov: number; z: number }][] = [
-    [390, { fov: 69, z: 800 }],
-    [840, { fov: 43, z: 760 }],
-    [1024, { fov: 58, z: 760 }],
-    [1440, { fov: 62, z: 500 }],
-    [1920, { fov: 68, z: 450 }],
+  const breakPoints: [number, { fov: number; y: number; z: number }][] = [
+    [390, { fov: 69, y: 0, z: 800 }],
+    [840, { fov: 35, y: 50, z: 760 }],
+    [1024, { fov: 58, y: 0, z: 760 }],
+    [1440, { fov: 62, y: 0, z: 500 }],
+    [1920, { fov: 68, y: 0, z: 450 }],
   ];
   const calc = () => {
     const width = window.outerWidth;
@@ -91,7 +91,7 @@ export const Camera: FC = () => {
         // near={pCameraCtl.near}
         // fov={pCameraCtl.fov}
         // position={Object.values(pCameraCtl.position)}
-        position={[0, 0, sizes?.z]}
+        position={[0, sizes?.y, sizes?.z]}
         fov={sizes.fov}
         far={5000}
         near={0.1}

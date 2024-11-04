@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { PileWithTransfer } from "@/modules/game/pile";
 import { CardComponent } from "../card/Card";
 import styles from "./styles.module.css";
-import { Placeholder } from "@/components/card/Placeholder";
+import { Placeholder } from "@/components/html/card/Placeholder";
 
 export const PileComponent: FC<{ pile: PileWithTransfer }> = observer(
   ({ pile }) => {

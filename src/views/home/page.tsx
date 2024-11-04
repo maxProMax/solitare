@@ -1,9 +1,9 @@
 "use client";
 
 import { FC } from "react";
-import { TableComponent } from "@/components/table/Table";
+import { TableComponent } from "@/components/html/table/Table";
 import { Game } from "@/modules/game/game";
-import { Header } from "@/components/header/Header";
+import { Header } from "@/components/html/header/Header";
 import styles from "./styles.module.css";
 
 export const HomeContainer: FC = () => {

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { observer } from "mobx-react-lite";
 import { StockWithTransfer } from "@/modules/game/stock";
-import { CardComponent } from "@/components/card/Card";
+import { CardComponent } from "@/components/html/card/Card";
 import styles from "./styles.module.css";
 import { Placeholder } from "../card/Placeholder";
 

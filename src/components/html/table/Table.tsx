@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { observer } from "mobx-react-lite";
-import { StockComponent } from "@/components/stock/Stock";
+import { StockComponent } from "@/components/html/stock/Stock";
 import { Game } from "@/modules/game/game";
-import { Piles } from "../piles/Piles";
-import { FoundationComponent } from "../foundation/Foundation";
-import { Win } from "@/components/win/Win";
+import { Piles } from "@/components/html/piles/Piles";
+import { FoundationComponent } from "@/components/html/foundation/Foundation";
+import { Win } from "@/components/html/win/Win";
 import styles from "./styles.module.css";
 
 export const TableComponent: FC<{ game: Game }> = observer(({ game }) => {

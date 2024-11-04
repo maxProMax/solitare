@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { observer } from "mobx-react-lite";
 import { FoundationWithTransfer } from "@/modules/game/foundation";
-import { Placeholder } from "@/components/card/Placeholder";
+import { Placeholder } from "@/components/html/card/Placeholder";
 import styles from "./styles.module.css";
 import { CardComponent } from "../card/Card";
 
