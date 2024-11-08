@@ -1,11 +1,17 @@
 {
+  "meta": {
+    "title": "Play Solitaire Online | Free Solitaire Card Game",
+    "description": "Play classic Solitaire online for free! Enjoy this timeless card game with an easy-to-use interface and beautiful design.",
+    "keywords": "Solitaire, free Solitaire game, play Solitaire, online Solitaire, card games, Solitaire classic, Klondike, patience game"
+  },
   "header": {
-    "btn": { "reset": "Reset", "resetScore": "Reset score" },
+    "btn": { "reset": "New game", "resetScore": "Reset score" },
     "score": "Score: {score}"
   },
   "content": {
     "win": {
-      "text": "You have won!!!"
-    }
+      "text": "You have won!"
+    },
+    "loading": "Loading"
   }
 }

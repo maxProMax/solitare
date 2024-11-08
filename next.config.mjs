@@ -5,8 +5,6 @@ const nextConfig = {
   transpilepackages: ["three"],
 };
 
-// export default nextConfig;
-
 const withNextIntl = createNextIntlPlugin();
 
 export default withNextIntl(nextConfig);

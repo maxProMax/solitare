@@ -6,8 +6,9 @@ import styles from "./styles.module.css";
 export const Actions: FC<{
   reset: () => void;
   resetScore: () => void;
+  prevStep: () => void;
   total: number;
-}> = ({ reset, resetScore, total }) => {
+}> = ({ reset, resetScore, prevStep, total }) => {
   const t = useTranslations();
 
   const [isLandscape, setIsLandscape] = useState(
@@ -29,26 +30,26 @@ export const Actions: FC<{
       distanceFactor={300}
       transform
       position={isLandscape ? [-350, 0, 0] : [0, 350, 0]}
-      //   position={Object.values(c.position)}
     >
       <div className={styles.btns}>
-        <button
-          className={styles["button-54"]}
-          style={{ whiteSpace: "nowrap" }}
-          onClick={resetScore}
-        >
-          {t("header.btn.resetScore")}
-        </button>
-        <button
-          className={styles["button-54"]}
-          style={{ whiteSpace: "nowrap" }}
-          onClick={reset}
-        >
-          {t("header.btn.reset")}
-        </button>
+        <div className={styles["btns-row"]}>
+          <button className={styles["button-54"]} onClick={prevStep}>
+            <span
+              style={{ display: "inline-flex", transform: "rotate(180deg)" }}
+            >
+              &#10140;
+            </span>
+          </button>
+          <button className={styles["button-54"]} onClick={reset}>
+            {t("header.btn.reset")}
+          </button>
+        </div>
         <span className={styles.textBlock}>
           {t("header.score", { score: total })}
         </span>
+        <button className={styles["button-54"]} onClick={resetScore}>
+          {t("header.btn.resetScore")}
+        </button>
       </div>
     </Html>
   );

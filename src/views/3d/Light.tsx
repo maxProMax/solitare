@@ -8,14 +8,14 @@ export const Light: FC = () => {
       <ambientLight intensity={1} />
       <pointLight
         color={"yellow"}
-        intensity={600}
+        intensity={400}
         decay={1}
         position={[100, 0, 300]}
         castShadow={true}
       />
       <pointLight
         color={"yellow"}
-        intensity={600}
+        intensity={400}
         decay={1}
         position={[-200, 0, 300]}
         castShadow={true}

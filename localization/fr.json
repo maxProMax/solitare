@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "title": "Jouer à la Patience en Ligne | Jeu de Cartes Patience Gratuit",
+    "description": "Jouez au classique Patience en ligne gratuitement ! Profitez de ce jeu de cartes intemporel avec une interface conviviale et un design élégant.",
+    "keywords": "Patience, jeu de Patience gratuit, jouer à la Patience, Patience en ligne, jeux de cartes, Patience classique, Klondike, jeu de patience"
+  },
+  "header": {
+    "btn": {
+      "reset": "Nouveau jeu",
+      "resetScore": "Réinitialiser le score"
+    },
+    "score": "Score : {score}"
+  },
+  "content": {
+    "win": {
+      "text": "Vous avez gagné !"
+    },
+    "loading": "Chargement"
+  }
+}

@@ -1,7 +1,7 @@
 import { useThree, ThreeEvent, useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import { Raycaster, Vector2, Object3D, Vector3 } from "three";
-import * as easing from "maath/easing";
+import { damp3 } from "maath/easing";
 
 export const useDraggable = ({
   horizontalLimit,
@@ -40,12 +40,7 @@ export const useDraggable = ({
           return;
         }
 
-        easing.damp3(
-          boxRef.current?.position,
-          startPosition.toArray(),
-          1 / 8,
-          delta
-        );
+        damp3(boxRef.current?.position, startPosition.toArray(), 1 / 8, delta);
       };
 
       isDragging_2 = false;

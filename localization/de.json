@@ -1,11 +1,20 @@
 {
+  "meta": {
+    "title": "Spielen Sie Patience Online | Kostenloses Patience Kartenspiel",
+    "description": "Spielen Sie das klassische Patience kostenlos online! Genießen Sie dieses zeitlose Kartenspiel mit einer benutzerfreundlichen Oberfläche und schönem Design.",
+    "keywords": "Patience, kostenloses Patience-Spiel, Patience spielen, online Patience, Kartenspiele, klassisches Patience, Klondike, Geduldspiel"
+  },
   "header": {
-    "btn": { "reset": "Reset de", "resetScore": "Reset score de" },
-    "score": "Score: {score} de"
+    "btn": {
+      "reset": "Neues Spiel",
+      "resetScore": "Punktestand zurücksetzen"
+    },
+    "score": "Punktestand: {score}"
   },
   "content": {
     "win": {
-      "text": "You have won!!!"
-    }
+      "text": "Sie haben gewonnen!"
+    },
+    "loading": "Laden"
   }
 }

@@ -50,8 +50,15 @@ export class History {
   historyBack() {
     const { single, from, to } = this._stack.pop() || {};
 
+    // allow only one step back
+    this._stack = [];
+
     single?.instance?.applyFromHistory(single.data);
     from?.instance?.applyFromHistory(from?.data);
     to?.instance?.applyFromHistory(to?.data);
+  }
+
+  isHistory() {
+    return !this._stack.length;
   }
 }

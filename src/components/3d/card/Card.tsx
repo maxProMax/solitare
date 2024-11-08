@@ -44,7 +44,7 @@ export const Card: FC<
     return (
       <group
         ref={draggable.boxRef as RefObject<Group>}
-        name={object3D.name}
+        name={"card"}
         position={new Vector3(...position)}
         onClick={(e) => {
           onClick?.();

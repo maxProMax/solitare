@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Juega Paciencia en Línea | Juego de Cartas Paciencia Gratis",
+    "description": "¡Juega al clásico Paciencia en línea gratis! Disfruta de este juego de cartas atemporal con una interfaz fácil de usar y un diseño hermoso.",
+    "keywords": "Paciencia, juego de Paciencia gratis, jugar Paciencia, Paciencia en línea, juegos de cartas, Paciencia clásico, Klondike, juego de paciencia"
+  },
+  "header": {
+    "btn": { "reset": "Nuevo juego", "resetScore": "Reiniciar puntaje" },
+    "score": "Puntaje: {score}"
+  },
+  "content": {
+    "win": {
+      "text": "¡Has ganado!"
+    },
+    "loading": "Cargando"
+  }
+}

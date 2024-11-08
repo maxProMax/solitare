@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Game } from "@/modules/game/game";
 import { Scene } from "@/components/3d/scene/Scene";
@@ -33,7 +33,9 @@ export const View3D: FC = () => {
       >
         <Camera />
         <Light />
-        <Scene game={game} />
+        <Suspense fallback={null}>
+          <Scene game={game} />
+        </Suspense>
       </Canvas>
     </div>
   );

@@ -1,12 +1,14 @@
-import { FC, Fragment } from "react";
+import { FC, Fragment, useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
 import { Suit, Type } from "@/modules/game/card";
-import { Object3D } from "three";
+import { Object3D, Vector3 } from "three";
 import { observer } from "mobx-react-lite";
 import { Game } from "@/modules/game/game";
 import { Table } from "@/components/3d/table/Table";
 import { Card, Placeholder } from "@/components/3d/card";
 import { Actions } from "@/components/3d/actions/Actions";
+import { useCardsWinAnimation } from "../win/hooks";
+import { Win } from "../win/Win";
 
 const suitMap = {
   [Suit.CLUBS]: "Clubs",
@@ -54,8 +56,8 @@ const createMap = (nodes: Record<string, Object3D>) => {
 
 export const Scene: FC<{ game: Game }> = observer(({ game }) => {
   const { nodes } = useGLTF("../assets/glp/cards/scene.gltf");
-
-  const cardsMap = createMap(nodes);
+  const cardsMap = useMemo(() => createMap(nodes), [nodes]);
+  const stockPosition = new Vector3(-210, 230, 0);
 
   const stockCards = game.stock?.cards.map((c, i) => {
     const node = cardsMap[c.suit][c.type];
@@ -90,9 +92,8 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
       />
     );
   });
-
   const piles = game.piles?.map((pile, i) => (
-    <group key={i} position={[0 + i * 70 - 210, 100, 1]}>
+    <group name="piles" key={i} position={[0 + i * 70 - 210, 100, 1]}>
       <Placeholder
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () => pile.addCardsFromTransfer();
@@ -130,10 +131,10 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
       }, <Fragment />)}
     </group>
   ));
-
   const foundation = game.foundation?.columns?.map((column, i) => (
-    <group key={i} position={[i * 70, 230, 1]}>
+    <Fragment key={i}>
       <Placeholder
+        position={[i * 70, 230, 1]}
         onPointerEnter={() => {
           game.helper_3d.onUpAction = () =>
             game.foundation?.addCardsFromTransfer(i) || false;
@@ -149,7 +150,7 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
           <Card
             object3D={node}
             key={node.name}
-            position={[0, 0, j * 1]}
+            position={[i * 70, 230, j * 1 + 1]}
             open={c.isOpen}
             onPointerDown={() => {
               game.foundation?.addToTransfer(j, i);
@@ -169,8 +170,15 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
           />
         );
       })}
-    </group>
+    </Fragment>
   ));
+
+  const isWin = Boolean(game.foundation?.isWin);
+  useCardsWinAnimation({
+    finalPosition: stockPosition,
+    isWin,
+    reset: () => game.reset(),
+  });
 
   return (
     <>
@@ -178,10 +186,12 @@ export const Scene: FC<{ game: Game }> = observer(({ game }) => {
         reset={() => game.reset()}
         resetScore={() => game.resetScore()}
         total={game.gameState.score.total}
+        prevStep={() => game.back()}
       />
+      {isWin && <Win />}
       <group name="root">
         <group>
-          <group position={[-210, 230, 0]}>{stockCards}</group>
+          <group position={stockPosition}>{stockCards}</group>
           <group position={[-120, 230, 0]}>{stockWaste}</group>
           {foundation}
           {piles}
