@@ -3,6 +3,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Rubik_Mono_One } from "next/font/google";
 import type { Viewport } from "next";
+import CookieConsentBanner from "@/components/cookie-consent-banner/Banner";
 import "@/styles/globals.css";
 
 export const viewport: Viewport = {
@@ -33,6 +34,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
+          <CookieConsentBanner />
           {children}
         </NextIntlClientProvider>
       </body>

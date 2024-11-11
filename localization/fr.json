@@ -16,5 +16,10 @@
       "text": "Vous avez gagné !"
     },
     "loading": "Chargement"
+  },
+  "cookies": {
+    "text": "Nous utilisons des cookies pour améliorer votre expérience. En acceptant, vous consentez à notre utilisation des cookies.",
+    "accept": "Accepter",
+    "decline": "Refuser"
   }
 }

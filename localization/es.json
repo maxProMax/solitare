@@ -13,5 +13,10 @@
       "text": "¡Has ganado!"
     },
     "loading": "Cargando"
+  },
+  "cookies": {
+    "text": "Usamos cookies para mejorar su experiencia. Al aceptar, usted acepta nuestro uso de cookies.",
+    "accept": "Aceptar",
+    "decline": "Rechazar"
   }
 }
