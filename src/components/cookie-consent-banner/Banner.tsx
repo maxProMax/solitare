@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import styles from "./style.module.css";
 import { useTranslations } from "next-intl";
 
@@ -35,7 +35,9 @@ export const CookieConsentBanner = () => {
 
   return (
     <>
-      {state.cookieVal && <GoogleAnalytics gaId="asdsa" />}
+      {state.cookieVal && (
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GMT_ID as string} />
+      )}
       {state.showBanner && (
         <>
           <div className={styles.cover} onClick={(e) => e.preventDefault()}>
