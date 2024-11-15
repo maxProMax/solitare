@@ -71,7 +71,10 @@ export const CookieConsentBanner = () => {
   return (
     <>
       {state.cookieVal && (
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GMT_ID as string} />
+        <GoogleTagManager
+          gtmId={process.env.NEXT_PUBLIC_GMT_ID as string}
+          gtmScriptUrl="https://www.googletagmanager.com/gtag/js"
+        />
       )}
       {state.showBanner && (
         <>
