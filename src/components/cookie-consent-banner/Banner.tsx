@@ -5,6 +5,18 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import styles from "./style.module.css";
 import { useTranslations } from "next-intl";
 
+function gtag(...args: unknown[]) {
+  window.dataLayer?.push(args);
+}
+function allConsentGranted() {
+  gtag("consent", "update", {
+    ad_user_data: "granted",
+    ad_personalization: "granted",
+    ad_storage: "granted",
+    analytics_storage: "granted",
+  });
+}
+
 export const CookieConsentBanner = () => {
   const t = useTranslations();
 
@@ -15,6 +27,7 @@ export const CookieConsentBanner = () => {
 
   const handleAccept = () => {
     localStorage.setItem("cookieConsent", "true");
+    allConsentGranted();
     updateState({ cookieVal: true, showBanner: false });
   };
 
@@ -24,11 +37,33 @@ export const CookieConsentBanner = () => {
   };
 
   useEffect(() => {
+    const intGTM = () => {
+      window.dataLayer = window.dataLayer || [];
+      console.log(111);
+
+      gtag("js", new Date());
+      gtag("config", process.env.NEXT_PUBLIC_GMT_ID);
+    };
+
     const val = localStorage.getItem("cookieConsent");
-    console.log({ val });
+
+    intGTM();
+
+    const isGranted = val === "true";
+
+    if (isGranted) {
+      allConsentGranted();
+    } else {
+      gtag("consent", "default", {
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        analytics_storage: "denied",
+      });
+    }
 
     updateState({
-      cookieVal: Boolean(val),
+      cookieVal: isGranted,
       showBanner: val === null,
     });
   }, []);
