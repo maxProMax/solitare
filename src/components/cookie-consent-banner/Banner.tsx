@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { GoogleTagManager } from "@next/third-parties/google";
 import styles from "./style.module.css";
 import { useTranslations } from "next-intl";
 
@@ -39,7 +38,6 @@ export const CookieConsentBanner = () => {
   useEffect(() => {
     const intGTM = () => {
       window.dataLayer = window.dataLayer || [];
-      console.log(111);
 
       gtag("js", new Date());
       gtag("config", process.env.NEXT_PUBLIC_GMT_ID);
@@ -70,12 +68,10 @@ export const CookieConsentBanner = () => {
 
   return (
     <>
-      {state.cookieVal && (
-        <GoogleTagManager
-          gtmId={process.env.NEXT_PUBLIC_GMT_ID as string}
-          gtmScriptUrl="https://www.googletagmanager.com/gtag/js"
-        />
-      )}
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GMT_ID}`}
+      ></script>
       {state.showBanner && (
         <>
           <div className={styles.cover} onClick={(e) => e.preventDefault()}>
