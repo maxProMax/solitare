@@ -16,6 +16,20 @@ function allConsentGranted() {
   });
 }
 
+const gtmScript = ` window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag(\`js\`, new Date());
+
+  gtag(\`config\`, \`${process.env.NEXT_PUBLIC_GMT_ID}\`);
+  gtag(\`consent\`, \`default\`, {
+  ad_storage: \`denied\`,
+  ad_user_data: \`denied\`,
+  ad_personalization: \`denied\`,
+  analytics_storage: \`denied\`
+  });
+  
+  `;
+
 export const CookieConsentBanner = () => {
   const t = useTranslations();
 
@@ -36,28 +50,12 @@ export const CookieConsentBanner = () => {
   };
 
   useEffect(() => {
-    const intGTM = () => {
-      window.dataLayer = window.dataLayer || [];
-
-      gtag("js", new Date());
-      gtag("config", process.env.NEXT_PUBLIC_GMT_ID);
-    };
-
     const val = localStorage.getItem("cookieConsent");
-
-    intGTM();
 
     const isGranted = val === "true";
 
     if (isGranted) {
       allConsentGranted();
-    } else {
-      gtag("consent", "default", {
-        ad_storage: "denied",
-        ad_user_data: "denied",
-        ad_personalization: "denied",
-        analytics_storage: "denied",
-      });
     }
 
     updateState({
@@ -72,6 +70,7 @@ export const CookieConsentBanner = () => {
         async
         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GMT_ID}`}
       ></script>
+      <script>{gtmScript}</script>
       {state.showBanner && (
         <>
           <div className={styles.cover} onClick={(e) => e.preventDefault()}>
