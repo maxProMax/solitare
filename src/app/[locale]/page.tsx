@@ -24,18 +24,21 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: t("meta.title"),
       description: t("meta.description"),
-      images: "/solitaire.png",
+      images: `${process.env.HOSTNAME}/solitaire.png`,
       type: "website",
     },
     twitter: {
       card: "summary_large_image",
       title: t("meta.title"),
       description: t("meta.description"),
-      images: "/solitaire.png",
+      images: `${process.env.HOSTNAME}/solitaire.png`,
     },
     alternates: {
-      canonical: "/",
-      languages: LOCALES.reduce((m, l) => ({ ...m, [l]: `/${l}` }), {}),
+      canonical: process.env.HOSTNAME,
+      languages: LOCALES.reduce(
+        (m, l) => ({ ...m, [l]: `${process.env.HOSTNAME}/${l}` }),
+        {}
+      ),
     },
     icons: {
       icon: "/favicon.webp",

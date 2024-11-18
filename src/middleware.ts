@@ -8,14 +8,14 @@ function middleware(request: NextRequest) {
   const nextIntlMiddleware = createMiddleware(routing)(request);
   const browserLanguage =
     headers().get("accept-language")?.split(",")[0] || "en";
-  const [country] = browserLanguage.split("-");
+  const [lang] = browserLanguage.split("-");
 
   if (
     request.nextUrl.pathname === "/" &&
-    country !== DEFAULT_LOCALE &&
-    LOCALES.includes(country)
+    lang !== DEFAULT_LOCALE &&
+    LOCALES.includes(lang)
   ) {
-    return NextResponse.redirect(new URL(`/${country}`, request.url));
+    return NextResponse.redirect(new URL(`/${lang}`, request.url));
   }
 
   return nextIntlMiddleware;

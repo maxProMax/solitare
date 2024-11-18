@@ -5,7 +5,9 @@ import { PerspectiveCamera } from "@react-three/drei";
 import { PerspectiveCamera as PerspectiveCameraThree } from "three";
 
 const breakPoints: [number, { fov: number; y: number; z: number }][] = [
-  [390, { fov: 69, y: 0, z: 800 }],
+  [320, { fov: 69, y: 0, z: 700 }],
+  [390, { fov: 69, y: 0, z: 760 }],
+  [600, { fov: 35, y: 40, z: 800 }],
   [840, { fov: 35, y: 70, z: 760 }],
   [1024, { fov: 58, y: 0, z: 760 }],
   [1440, { fov: 62, y: 0, z: 500 }],
@@ -26,6 +28,7 @@ const calc = () => {
       return current[1];
     }
   }
+
   return breakPoints[0][1];
 };
 

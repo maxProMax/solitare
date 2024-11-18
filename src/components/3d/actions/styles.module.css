@@ -60,3 +60,7 @@
   -webkit-text-stroke: 1px black;
   text-shadow: 3px 3px black;
 }
+
+.resetFullGame {
+  width: min-content;
+}

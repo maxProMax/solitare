@@ -16,6 +16,11 @@
   clip-path: inset(0 3ch 0 0);
   animation: l 1s steps(4) infinite;
 }
+@media only screen and (max-device-width: 568px) {
+  .loading {
+    font-size: 20px;
+  }
+}
 
 @keyframes l {
   to {

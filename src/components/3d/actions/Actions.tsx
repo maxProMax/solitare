@@ -2,6 +2,7 @@ import { Html } from "@react-three/drei";
 import { FC, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import styles from "./styles.module.css";
+import clsx from "clsx";
 
 export const Actions: FC<{
   reset: () => void;
@@ -47,7 +48,10 @@ export const Actions: FC<{
         <span className={styles.textBlock}>
           {t("header.score", { score: total })}
         </span>
-        <button className={styles["button-54"]} onClick={resetScore}>
+        <button
+          className={clsx(styles["button-54"], styles.resetFullGame)}
+          onClick={resetScore}
+        >
           {t("header.btn.resetScore")}
         </button>
       </div>

@@ -1,0 +1,22 @@
+{
+  "meta": {
+    "title": "Jogue Paciência Online | Jogo de Cartas Paciência Grátis",
+    "description": "Jogue o clássico Paciência online gratuitamente! Desfrute deste jogo de cartas atemporal com uma interface fácil de usar e um design bonito.",
+    "keywords": "Paciência, jogo de paciência grátis, jogar paciência, paciência online, jogos de cartas, paciência clássico, Klondike, jogo de paciência"
+  },
+  "header": {
+    "btn": { "reset": "Novo jogo", "resetScore": "Redefinir pontuação" },
+    "score": "Pontuação: {score}"
+  },
+  "content": {
+    "win": {
+      "text": "Você venceu!"
+    },
+    "loading": "Carregando"
+  },
+  "cookies": {
+    "text": "Usamos cookies para melhorar sua experiência. Ao aceitar, você concorda com o uso de cookies.",
+    "accept": "Aceitar",
+    "decline": "Recusar"
+  }
+}
