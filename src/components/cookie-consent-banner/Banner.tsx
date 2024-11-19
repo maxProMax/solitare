@@ -14,20 +14,21 @@ function allConsentGranted() {
     ad_storage: "granted",
     analytics_storage: "granted",
   });
+  gtag("js", new Date());
+  gtag("config", `${process.env.NEXT_PUBLIC_GMT_ID}`);
 }
 
-const gtmScript = ` window.dataLayer = window.dataLayer || [];
+const gtmScript = ` 
+  window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
-  gtag(\`js\`, new Date());
 
-  gtag(\`config\`, \`${process.env.NEXT_PUBLIC_GMT_ID}\`);
   gtag(\`consent\`, \`default\`, {
-  ad_storage: \`denied\`,
-  ad_user_data: \`denied\`,
-  ad_personalization: \`denied\`,
-  analytics_storage: \`denied\`
+    ad_storage: \`denied\`,
+    ad_user_data: \`denied\`,
+    ad_personalization: \`denied\`,
+    analytics_storage: \`denied\`,
+    wait_for_update: 500
   });
-  
   `;
 
 export const CookieConsentBanner = () => {
