@@ -8,6 +8,7 @@ const View3d = dynamic(() => import("@/views/3d/view"), { ssr: false });
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
+
   return {
     title: t("meta.title"),
     description: t("meta.description"),
