@@ -118,9 +118,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           style={{ display: "none", visibility: "hidden" }}
         ></iframe>
       </noscript>
-      <script>
-        {`gtag('event', 'conversion', {'send_to': 'AW-16839866483/adFCCOWp0pUaEPPw790-'});`}
-      </script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `gtag('event', 'conversion', {'send_to': 'AW-16839866483/adFCCOWp0pUaEPPw790-'});`,
+        }}
+      ></script>
       {state.showBanner && (
         <>
           <div className={styles.cover} onClick={(e) => e.preventDefault()}>
