@@ -63,11 +63,11 @@ export default async function Page3D() {
 
   if (ip) {
     console.log({ ip });
-    const { country, city } = await fetch(`https://ipapi.co/${ip}/json`).then(
-      (r) => r.json()
+    const data = await fetch(`https://ipapi.co/${ip}/json`).then((r) =>
+      r.json()
     );
 
-    console.log({ ip, country, city });
+    console.log(data);
   }
 
   return (
