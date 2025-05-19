@@ -58,7 +58,8 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page3D() {
   const _h = await headers();
 
-  const ip = _h.get("x-real-ip") || _h.get("x-forwarded-for");
+  const ips = _h.get("x-real-ip") || _h.get("x-forwarded-for");
+  const [, ip] = ips?.split(",") || [];
 
   if (ip) {
     console.log({ ip });
