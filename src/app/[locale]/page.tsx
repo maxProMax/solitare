@@ -56,6 +56,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page3D() {
+  const _h = await headers();
+
+  const ip = _h.get("x-real-ip") || _h.get("x-forwarded-for");
+
+  if (ip) {
+    console.log({ ip });
+    const { country, city } = await fetch(`https://ipapi.co/${ip}/json`).then(
+      (r) => r.json()
+    );
+
+    console.log({ ip, country, city });
+  }
+
   return (
     <main>
       <Loader />
