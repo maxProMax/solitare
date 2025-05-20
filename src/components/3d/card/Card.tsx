@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useDraggable } from "./Draggable";
 import { ThreeEvent } from "@react-three/fiber";
 import { X_SCALE } from "@/constants";
+import { logAction } from "@/backend/actions";
 
 export const Card: FC<
   PropsWithChildren<{
@@ -66,6 +67,12 @@ export const Card: FC<
           }
         }}
         onPointerUp={(e) => {
+          if (!window.VISITED) {
+            window.VISITED = true;
+
+            logAction();
+          }
+
           if (open) {
             onPointerUp?.(draggable.reset, e);
             window.document.body.classList.remove(

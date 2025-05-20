@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { LOCALES } from "@/locales";
 import { Loader } from "@/components/3d/loader/loader";
 import { headers } from "next/headers";
+import { getIP, getUserAgent } from "@/backend/utils";
 
 const View3d = dynamic(() => import("@/views/3d/view"), { ssr: false });
 
@@ -56,19 +57,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page3D() {
-  const _h = await headers();
+  const ip = await getIP();
+  const userAgent = await getUserAgent();
 
-  const ips = _h.get("x-real-ip") || _h.get("x-forwarded-for");
-  const [, ip] = ips?.split(",") || [];
-
-  if (ip) {
-    console.log({ ip });
-    const data = await fetch(`https://ipapi.co/${ip}/json`).then((r) =>
-      r.json()
-    );
-
-    console.log(data);
-  }
+  console.log("page load", { ip, userAgent });
 
   return (
     <main>

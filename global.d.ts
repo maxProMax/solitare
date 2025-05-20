@@ -8,5 +8,6 @@ declare global {
 
   interface Window {
     dataLayer?: unknown[];
+    VISITED?: boolean;
   }
 }
