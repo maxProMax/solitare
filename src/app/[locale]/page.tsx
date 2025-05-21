@@ -57,11 +57,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page3D() {
-  const ip = await getIP();
-  const userAgent = await getUserAgent();
-
-  console.log("page load", { ip, userAgent });
-
   return (
     <main>
       <Loader />
