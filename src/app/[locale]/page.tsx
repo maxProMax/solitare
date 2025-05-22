@@ -4,7 +4,6 @@ import { getTranslations } from "next-intl/server";
 import { LOCALES } from "@/locales";
 import { Loader } from "@/components/3d/loader/loader";
 import { headers } from "next/headers";
-import { getIP, getUserAgent } from "@/backend/utils";
 
 const View3d = dynamic(() => import("@/views/3d/view"), { ssr: false });
 
