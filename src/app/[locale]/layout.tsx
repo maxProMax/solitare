@@ -29,7 +29,6 @@ export default async function RootLayout({
   params: { locale: string };
 }>) {
   const messages = await getMessages();
-
   return (
     <html lang={locale}>
       <body className={inter.className}>
@@ -38,6 +37,11 @@ export default async function RootLayout({
           {children}
         </NextIntlClientProvider>
       </body>
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9529954302448484"
+        crossOrigin="anonymous"
+      ></script>
     </html>
   );
 }
