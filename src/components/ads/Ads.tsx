@@ -17,6 +17,7 @@ export const Ads = () => {
         data-ad-slot="8766139588"
       ></ins>
       <Script
+        id="adsbygoogle"
         dangerouslySetInnerHTML={{
           __html: "(adsbygoogle = window.adsbygoogle || []).push({});",
         }}
