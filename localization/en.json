@@ -1,4 +1,12 @@
 {
+  "nav": {
+    "about": "about"
+  },
+  "page": {
+    "about": {
+      "desc": "<h4>Goal of the Game</h4><p>Your primary mission is to uncover and strategically move specific cards in order to build each foundation pile from Ace to King, following both suit and sequence. The ultimate aim? To transfer every card in the deck onto the foundations. Achieve this, and you've successfully conquered Solitaire.</p><h4>Card Hierarchy</h4><p>Cards are ranked from highest to lowest as follows: King (K), Queen (Q), Jack (J), 10 through 2, and finally, Ace (A).</p><h4>Card Layout</h4><p>Solitaire consists of four main types of card piles:</p><p>Tableau: The central playing field, made up of seven columns.</p><p>Foundations: Four stacks, one for each suit—hearts, diamonds, clubs, and spades—where cards are built up from Ace to King.</p><p>Stock (or Hand) Pile: The draw pile containing the cards not initially dealt to the tableau.</p><p>Talon (or Waste) Pile: Cards from the stock that can’t be immediately played are placed here, face up.</p><p>All leftover cards form the stock pile, positioned above the tableau. The foundation and waste piles start empty.</p><p>Keep shifting cards, revealing face-down cards, and drawing from the stock until you’ve successfully stacked all cards into the four foundation piles. Once all suits are built from Ace to King, the game is won!</p>"
+    }
+  },
   "meta": {
     "title": "Play Solitaire Online | Free Solitaire Card Game",
     "description": "Play classic Solitaire online for free! Enjoy this timeless card game with an easy-to-use interface and beautiful design.",

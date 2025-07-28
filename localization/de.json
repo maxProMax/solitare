@@ -1,4 +1,12 @@
 {
+  "nav": {
+    "about": "Über"
+  },
+  "page": {
+    "about": {
+      "desc": "<h4>Ziel des Spiels</h4><p>Deine Hauptaufgabe besteht darin, bestimmte Karten aufzudecken und strategisch zu verschieben, um jede Fundamentreihe in aufsteigender Reihenfolge und gleicher Farbe von Ass bis König zu bauen. Das ultimative Ziel? Alle Karten des Decks auf die Fundamentstapel zu übertragen. Gelingt dir das, hast du Solitaire erfolgreich gemeistert.</p><h4>Kartenrangfolge</h4><p>Die Karten sind von hoch nach niedrig wie folgt geordnet: König (K), Dame (Q), Bube (J), 10 bis 2 und schließlich Ass (A).</p><h4>Kartenanordnung</h4><p>Solitaire besteht aus vier Hauptarten von Kartenstapeln:</p><p>Tableau: Das zentrale Spielfeld, bestehend aus sieben Spalten.</p><p>Fundamente: Vier Stapel – jeweils einer pro Farbe (Herz, Karo, Kreuz und Pik) – auf denen Karten von Ass bis König aufgebaut werden.</p><p>Vorratsstapel (auch „Hand“ genannt): Der Nachziehstapel mit den Karten, die zu Beginn nicht im Tableau verteilt wurden.</p><p>Ablagestapel (auch „Talon“ genannt): Karten aus dem Vorratsstapel, die momentan nicht gespielt werden können, werden hier offen abgelegt.</p><p>Alle übrigen Karten bilden den Vorratsstapel und werden oberhalb des Tableaus platziert. Die Fundament- und Ablagestapel beginnen leer.</p><p>Verschiebe weiterhin Karten, decke verdeckte Karten auf und ziehe vom Vorratsstapel, bis du alle Karten erfolgreich auf die vier Fundamentstapel in richtiger Reihenfolge gelegt hast. Sobald alle Farben vollständig von Ass bis König aufgebaut sind, ist das Spiel gewonnen!</p>"
+    }
+  },
   "meta": {
     "title": "Spielen Sie Patience Online | Kostenloses Patience Kartenspiel",
     "description": "Spielen Sie das klassische Patience kostenlos online! Genießen Sie dieses zeitlose Kartenspiel mit einer benutzerfreundlichen Oberfläche und schönem Design.",

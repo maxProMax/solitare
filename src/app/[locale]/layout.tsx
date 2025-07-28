@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { Rubik_Mono_One } from "next/font/google";
+import { Rubik_Mono_One, Open_Sans } from "next/font/google";
 import type { Viewport } from "next";
 import CookieConsentBanner from "@/components/cookie-consent-banner/Banner";
+import { Ads } from "@/components/ads/Ads";
+import { Nav } from "@/components/links/nav";
 import "@/styles/globals.css";
+import clsx from "clsx";
 
 export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const inter = Rubik_Mono_One({
+const rubik = Rubik_Mono_One({
   subsets: ["latin", "cyrillic"],
-  variable: "--font-inter",
+  variable: "--font-rubik",
   weight: "400",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-open-sans",
 });
 
 export const metadata: Metadata = {
@@ -31,10 +39,14 @@ export default async function RootLayout({
   const messages = await getMessages();
   return (
     <html lang={locale}>
-      <body className={inter.className}>
+      <body
+        className={clsx(rubik.className, rubik.variable, openSans.variable)}
+      >
         <NextIntlClientProvider messages={messages}>
           <CookieConsentBanner />
           {children}
+          <Ads />
+          <Nav />
         </NextIntlClientProvider>
       </body>
       <script

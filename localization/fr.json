@@ -1,4 +1,12 @@
 {
+  "nav": {
+    "about": "À propos"
+  },
+  "page": {
+    "about": {
+      "desc": "<h4>But du jeu</h4><p>Votre objectif principal est de découvrir et de déplacer stratégiquement certaines cartes afin de construire chaque pile de fondation dans l'ordre croissant et par couleur, de l'As au Roi. Le but ultime ? Placer toutes les cartes du paquet sur les fondations. Si vous y parvenez, vous avez gagné au Solitaire !</p><h4>Hiérarchie des cartes</h4><p>Les cartes sont classées de la plus forte à la plus faible comme suit : Roi (K), Reine (Q), Valet (J), 10 jusqu’à 2, puis l’As (A).</p><h4>Disposition des cartes</h4><p>Le Solitaire se compose de quatre types principaux de piles de cartes :</p><p>Tableau : La zone principale de jeu, composée de sept colonnes.</p><p>Fondations : Quatre piles, une pour chaque couleur (cœur, carreau, trèfle et pique), sur lesquelles les cartes sont construites de l’As au Roi.</p><p>Pioche (ou main) : La pile de cartes qui ne sont pas distribuées au tableau au début du jeu.</p><p>Défausse (ou talon) : Les cartes provenant de la pioche qui ne peuvent pas être jouées immédiatement sont placées ici, face visible.</p><p>Les cartes restantes forment la pioche, placée au-dessus du tableau. Les piles de fondation et de défausse commencent vides.</p><p>Continuez à déplacer les cartes, à retourner celles qui sont face cachée, et à tirer des cartes de la pioche jusqu’à ce que vous ayez placé toutes les cartes dans les quatre fondations, en respectant l’ordre et la couleur. Une fois toutes les couleurs complètes de l’As au Roi, la partie est gagnée !</p>"
+    }
+  },
   "meta": {
     "title": "Jouer à la Patience en Ligne | Jeu de Cartes Patience Gratuit",
     "description": "Jouez au classique Patience en ligne gratuitement ! Profitez de ce jeu de cartes intemporel avec une interface conviviale et un design élégant.",

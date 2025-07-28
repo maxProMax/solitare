@@ -1,4 +1,12 @@
 {
+  "nav": {
+    "about": "Sobre"
+  },
+  "page": {
+    "about": {
+      "desc": "<h4>Objetivo do Jogo</h4><p>Seu principal objetivo é revelar e mover estrategicamente cartas específicas para construir cada pilha de fundação em ordem crescente e no mesmo naipe, do Ás ao Rei. O objetivo final? Transferir todas as cartas do baralho para as fundações. Se conseguir fazer isso, você venceu o jogo de Paciência!</p><h4>Hierarquia das Cartas</h4><p>As cartas são classificadas da mais alta para a mais baixa na seguinte ordem: Rei (K), Dama (Q), Valete (J), de 10 até 2 e, por fim, o Ás (A).</p><h4>Distribuição das Cartas</h4><p>O jogo de Paciência é composto por quatro tipos principais de montes de cartas:</p><p>Tableau: O campo principal do jogo, formado por sete colunas.</p><p>Fundações: Quatro pilhas, uma para cada naipe (copas, ouros, paus e espadas), onde as cartas são organizadas do Ás ao Rei.</p><p>Monte de Compra (ou Mão): A pilha de cartas que não são distribuídas no tableau no início do jogo.</p><p>Monte de Descarte (ou Talão): Cartas do monte de compra que não podem ser jogadas imediatamente são colocadas aqui, com a face voltada para cima.</p><p>As cartas restantes formam o monte de compra, que é colocado acima do tableau. As pilhas de fundação e descarte começam vazias.</p><p>Continue movendo cartas, revelando cartas viradas para baixo e comprando do monte até conseguir organizar todas as cartas nas quatro fundações, respeitando a ordem e o naipe. Quando todas as cartas estiverem organizadas do Ás ao Rei, você venceu!</p>"
+    }
+  },
   "meta": {
     "title": "Jogue Paciência Online | Jogo de Cartas Paciência Grátis",
     "description": "Jogue o clássico Paciência online gratuitamente! Desfrute deste jogo de cartas atemporal com uma interface fácil de usar e um design bonito.",

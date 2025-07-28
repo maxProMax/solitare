@@ -1,4 +1,12 @@
 {
+  "nav": {
+    "about": "Acerca de"
+  },
+  "page": {
+    "about": {
+      "desc": "<h4>Objetivo del Juego</h4><p>Tu misión principal es descubrir y mover estratégicamente cartas específicas para construir cada pila de cimientos desde el As hasta el Rey, siguiendo el mismo palo y orden. ¿El objetivo final? Colocar todas las cartas del mazo en las pilas de cimientos. ¡Si lo logras, habrás ganado al Solitario!</p><h4>Jerarquía de Cartas</h4><p>Las cartas se clasifican de mayor a menor de la siguiente manera: Rey (K), Reina (Q), Jota (J), del 10 al 2, y por último el As (A).</p><h4>Distribución de Cartas</h4><p>Solitario consta de cuatro tipos principales de montones de cartas:</p><p>Tableau: El campo de juego principal, compuesto por siete columnas.</p><p>Cimientos: Cuatro pilas, una para cada palo (corazones, diamantes, tréboles y picas), donde las cartas se colocan desde el As hasta el Rey.</p><p>Mazo (o Mano): El montón de cartas que no se reparte al inicio en el tableau.</p><p>Descarte (o Talón): Las cartas del mazo que no se pueden jugar de inmediato se colocan aquí, boca arriba.</p><p>Las cartas sobrantes forman el mazo, que se coloca sobre el tableau. Las pilas de cimientos y descarte comienzan vacías.</p><p>Sigue moviendo cartas, revelando las que están boca abajo y robando del mazo hasta que logres construir todas las pilas de cimientos en orden y por palo. ¡Una vez que todas las cartas estén en su lugar de As a Rey, habrás ganado el juego!</p>"
+    }
+  },
   "meta": {
     "title": "Juega Paciencia en Línea | Juego de Cartas Paciencia Gratis",
     "description": "¡Juega al clásico Paciencia en línea gratis! Disfruta de este juego de cartas atemporal con una interfaz fácil de usar y un diseño hermoso.",
