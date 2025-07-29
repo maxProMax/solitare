@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, Suspense } from "react";
+import { FC, Suspense, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Game } from "@/modules/game/game";
 import { Scene } from "@/components/3d/scene/Scene";
@@ -10,6 +10,17 @@ import styles from "./styles.module.css";
 
 export const View3D: FC = () => {
   const game = new Game();
+
+  useEffect(() => {
+    const toggleTouch = (force = false) =>
+      document.documentElement.classList.toggle("blockTouch", force);
+
+    toggleTouch(true);
+
+    return () => {
+      toggleTouch();
+    };
+  }, []);
 
   return (
     <div
