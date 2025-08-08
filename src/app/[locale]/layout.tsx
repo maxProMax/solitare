@@ -5,7 +5,7 @@ import { Rubik_Mono_One, Open_Sans } from "next/font/google";
 import type { Viewport } from "next";
 import CookieConsentBanner from "@/components/cookie-consent-banner/Banner";
 import { Ads } from "@/components/ads/Ads";
-import { Nav } from "@/components/links/nav";
+
 import "@/styles/globals.css";
 import clsx from "clsx";
 
@@ -46,7 +46,6 @@ export default async function RootLayout({
           <CookieConsentBanner />
           {children}
           <Ads />
-          <Nav />
         </NextIntlClientProvider>
       </body>
       <script

@@ -1,3 +1,20 @@
+.content {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  max-width: 50vw;
+
+  & h1 {
+    font-family: var(--font-open-sans);
+    font-size: 0.8rem;
+  }
+
+  & p {
+    font-family: var(--font-open-sans);
+    font-size: 0.5rem;
+  }
+}
+
 .loaderBlock {
   position: absolute;
   display: flex;

@@ -8,6 +8,10 @@ export const Loader: FC = () => {
 
   return (
     <div className={styles.loaderBlock}>
+      <div className={styles.content}>
+        <h1>{t("meta.title")}</h1>
+        <p>{t("meta.description")}</p>
+      </div>
       <div className={styles.loading}>{t("content.loading")}...</div>
     </div>
   );

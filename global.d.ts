@@ -1,11 +1,12 @@
-import en from "./localization/en.json";
+import messages from "./localization/en.json";
 
-type Messages = typeof en;
+declare module "next-intl" {
+  interface AppConfig {
+    Messages: typeof messages;
+  }
+}
 
 declare global {
-  // Use type safe message keys with `next-intl`
-  interface IntlMessages extends Messages {}
-
   interface Window {
     dataLayer?: unknown[];
     VISITED?: boolean;

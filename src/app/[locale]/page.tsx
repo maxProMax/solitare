@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { LOCALES } from "@/locales";
 import { Loader } from "@/components/3d/loader/loader";
 import { headers } from "next/headers";
+import { Nav } from "@/components/links/nav";
 
 const View3d = dynamic(() => import("@/views/3d/view"), { ssr: false });
 
@@ -60,6 +61,7 @@ export default async function Page3D() {
     <main>
       <Loader />
       <View3d />
+      <Nav />
     </main>
   );
 }
