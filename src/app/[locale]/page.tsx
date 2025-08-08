@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: `https://${_h.get("host")}`,
       languages: LOCALES.reduce(
         (m, l) => ({ ...m, [l]: `https://${_h.get("host")}/${l}` }),
-        { "x-default": `https://${_h.get("host")}` }
+        { "x-default": `https://${_h.get("host")}/` }
       ),
     },
     icons: {
